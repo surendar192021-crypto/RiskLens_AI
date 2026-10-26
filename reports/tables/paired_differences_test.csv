@@ -1,0 +1,7 @@
+model_a,model_b,metric,difference,ci_low,ci_high,share_resamples_a_better
+lightgbm (uncalibrated),logistic_regression (uncalibrated),roc_auc,0.014152095363011097,0.011188044575773345,0.017422372700796402,1.0
+lightgbm (uncalibrated),logistic_regression (uncalibrated),pr_auc,0.022490184674028857,0.016641181761246786,0.029520050670949944,1.0
+lightgbm (uncalibrated),logistic_regression (uncalibrated),brier,-0.0010898065314845912,-0.0013743078231070048,-0.0008756655248682892,0.0
+lightgbm (uncalibrated),xgboost (uncalibrated),roc_auc,-0.0007621235886757782,-0.002481048049564205,0.0007943137887742913,0.20666666666666667
+lightgbm (uncalibrated),xgboost (uncalibrated),pr_auc,-0.0011402075027126535,-0.0046769612205932246,0.003152872998185436,0.3233333333333333
+lightgbm (uncalibrated),xgboost (uncalibrated),brier,6.440312931640935e-05,-8.767402948470435e-05,0.00021182819870891337,0.7466666666666667

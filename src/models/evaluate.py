@@ -116,3 +116,34 @@ def bootstrap_ci(
         values.append(metric(y[idx], p[idx]))
     low, high = np.quantile(values, [alpha / 2, 1 - alpha / 2])
     return float(low), float(high)
+
+
+def paired_bootstrap_diff(
+    y: Any, p_a: Any, p_b: Any, metric: Callable[[np.ndarray, np.ndarray], float],
+    n_resamples: int = 300, seed: int = 42, alpha: float = 0.05,
+) -> dict[str, float]:
+    """metric(A) - metric(B) on the same borrowers, with a paired bootstrap CI.
+
+    Both models are scored on the SAME resampled borrowers each time, so the
+    interval reflects the uncertainty of the difference itself; it is narrower
+    and more appropriate than comparing two separate intervals.
+    """
+    y = _check_labels(y)
+    p_a, p_b = check_probabilities(p_a), check_probabilities(p_b)
+    if not len(y) == len(p_a) == len(p_b):
+        raise ValueError("y, p_a and p_b must have the same length")
+    rng = np.random.default_rng(seed)
+    n = len(y)
+    diffs = []
+    for _ in range(n_resamples):
+        idx = rng.integers(0, n, n)
+        if y[idx].min() == y[idx].max():
+            continue
+        diffs.append(metric(y[idx], p_a[idx]) - metric(y[idx], p_b[idx]))
+    low, high = np.quantile(diffs, [alpha / 2, 1 - alpha / 2])
+    return {
+        "difference": float(metric(y, p_a) - metric(y, p_b)),
+        "ci_low": float(low),
+        "ci_high": float(high),
+        "share_resamples_a_better": float(np.mean(np.asarray(diffs) > 0)),
+    }

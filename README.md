@@ -13,7 +13,8 @@ guarantee future defaults.
 | 2. Dataset audit | Done: `python -m scripts.run_audit` → [docs/dataset_audit.md](docs/dataset_audit.md), findings in [docs/dataset_audit_findings.md](docs/dataset_audit_findings.md) |
 | 3. Feature engineering and modelling table | Done: `python -m scripts.build_dataset` → `data/processed/`, [docs/data_dictionary.md](docs/data_dictionary.md), [docs/feature_engineering.md](docs/feature_engineering.md) |
 | 4. Model training and comparison | Done: `python -m scripts.train_models` → champion LightGBM, challenger XGBoost; [docs/model_training.md](docs/model_training.md) |
-| 5+ | Not started |
+| 5. Calibration and final test evaluation | Done: `python -m scripts.calibrate_and_evaluate` → deployed model in `models/current_model.json` (test ROC-AUC 0.788, PR-AUC 0.290); [docs/calibration_and_evaluation.md](docs/calibration_and_evaluation.md) |
+| 6+ | Not started |
 
 ## Setup (Windows PowerShell)
 

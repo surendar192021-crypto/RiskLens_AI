@@ -52,6 +52,18 @@ modelling:
     xgboost: {n_estimators: 3000, learning_rate: 0.03, max_depth: 6, min_child_weight: 20, subsample: 0.8, colsample_bytree: 0.6, reg_lambda: 1.0}
     lightgbm: {n_estimators: 3000, learning_rate: 0.03, num_leaves: 31, min_child_samples: 100, subsample: 0.8, subsample_freq: 1, colsample_bytree: 0.6, reg_lambda: 1.0}
 
+calibration:
+  # Fitted on the calibration split only; compared on validation; "none" is a valid outcome.
+  methods: [none, sigmoid, isotonic]
+  selection_metric: brier           # lower is better; ties -> lower log loss
+
+thresholds:
+  # Chosen on validation with the final (calibrated) probabilities, then applied unchanged to test.
+  policy: max_f1                    # one of: max_f1, min_cost, recall_target
+  cost_fn: 5.0                      # ASSUMPTION: missing a payment-difficulty case costs 5x ...
+  cost_fp: 1.0                      # ... a false alarm. Illustrative, not a bank's real cost ratio.
+  recall_target: 0.60
+
 risk_bands:
   # PROVISIONAL presentation bands, not validated banking standards.
   # Intervals are [lower, upper) except the last band, which includes 1.0.

@@ -59,6 +59,19 @@ def test_missing_feature_gives_clear_error(setup):
         predict_proba(model, portfolio.drop(columns=[features["numeric"][0]]))
 
 
+@pytest.mark.skipif(not (MODELS / "current_model.json").exists(), reason="Phase 5 not run yet")
+def test_current_model_pointer_is_usable(setup):
+    _, _, features, portfolio = setup
+    current = json.loads((MODELS / "current_model.json").read_text(encoding="utf-8"))
+    assert 0 < current["threshold"] < 1
+    assert current["threshold_chosen_on"] == "validation split"
+    model, meta = load_model(MODELS / current["model_file"])
+    assert meta["calibration_method"] == current["calibration_method"]
+    assert meta["numeric"] == features["numeric"]
+    p = predict_proba(model, portfolio)
+    assert ((p >= 0) & (p <= 1)).all()
+
+
 def test_target_column_not_needed_for_scoring(setup):
     _, _, _, portfolio = setup
     assert "TARGET" not in portfolio.columns  # scoring works on unlabelled data above
