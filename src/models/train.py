@@ -152,7 +152,8 @@ def append_experiment_log(rows: list[dict[str, Any]]) -> None:
     text = path.read_text(encoding="utf-8").replace("_No experiments run yet._\n", "")
     lines = [
         f"| {r['date']} | {r['run_id']} | 4 | {r['dataset_version']} | {r['n_features']} features "
-        f"| train → validation | {r['experiment']} ({r['params']}) | {r['seed']} | {r['imbalance']} "
+        f"| train → validation | {r['experiment']} ({r['params']}) | {r['seed']} "
+        f"| {r['imbalance']} "
         f"| none | max-F1 on validation | ROC-AUC {r['roc_auc']:.4f}, PR-AUC {r['pr_auc']:.4f}, "
         f"Brier {r['brier']:.4f}, ECE(q) {r['ece_quantile']:.4f} | {r['notes']} |"
         for r in rows
