@@ -1,0 +1,17 @@
+# Direct dependencies. Exact tested versions are in requirements-lock.txt.
+# Install:  python -m pip install -r requirements-lock.txt
+pandas
+numpy
+scipy
+pyarrow
+scikit-learn
+lightgbm
+xgboost
+shap
+plotly
+matplotlib
+streamlit
+pyyaml
+joblib
+pytest
+ruff

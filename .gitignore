@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# Secrets
+.env
+
+# Data: never commit raw or processed datasets (keep folder placeholders)
+data/**/*
+!data/**/
+!data/**/.gitkeep
+
+# Model artifacts (versioned locally under models/<version>/)
+models/**/*
+!models/.gitkeep
+
+# Generated outputs (keep folders; commit selected final figures/tables deliberately)
+reports/experiment_results/**/*
+!reports/experiment_results/.gitkeep
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/

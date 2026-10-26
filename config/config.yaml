@@ -1,0 +1,39 @@
+# RiskLens AI — central configuration.
+# Every threshold or assumption used by the code should live here, not in source files.
+# Sections for later phases (alerts, LGD, Monte Carlo, drift) are added when those phases start.
+
+project:
+  name: RiskLens AI
+  random_seed: 42
+
+paths:            # relative to the project root
+  raw_data: data/raw
+  interim_data: data/interim
+  processed_data: data/processed
+  external_data: data/external
+  models: models
+  figures: reports/figures
+  tables: reports/tables
+  experiment_results: reports/experiment_results
+
+data:
+  id_column: SK_ID_CURR
+  target_column: TARGET
+  # Labelled data comes ONLY from this file; application_test.csv has no TARGET.
+  train_file: application_train.csv
+
+splits:
+  # Stratified random split of application_train (no absolute dates -> no temporal split).
+  # train: model fitting | validation: model selection + threshold choice
+  # calibration: fitting calibrators only | test: touched once, for final evaluation
+  train: 0.60
+  validation: 0.15
+  calibration: 0.10
+  test: 0.15
+  stratify_on_target: true
+
+risk_bands:
+  # PROVISIONAL presentation bands, not validated banking standards.
+  # Intervals are [lower, upper) except the last band, which includes 1.0.
+  edges: [0.0, 0.2, 0.4, 0.6, 0.8, 1.0]
+  labels: [Very Low, Low, Moderate, High, Critical]
