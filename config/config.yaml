@@ -32,6 +32,26 @@ splits:
   test: 0.15
   stratify_on_target: true
 
+modelling:
+  # Champion = highest validation PR-AUC (suited to an 8% positive class); ties broken by Brier score.
+  selection_metric: pr_auc
+  bootstrap_resamples: 300          # for 95% confidence intervals of validation ROC-AUC / PR-AUC
+  early_stopping_rounds: 100        # boosting stops when validation log-loss stops improving
+  # Each experiment = model family + imbalance treatment. "weighted" reweights positives
+  # by negatives/positives on the training split; no resampling (e.g. SMOTE) is used.
+  experiments:
+    - {name: logistic_regression, family: logistic_regression, weighted: false}
+    - {name: logistic_regression_weighted, family: logistic_regression, weighted: true}
+    - {name: random_forest, family: random_forest, weighted: false}
+    - {name: xgboost, family: xgboost, weighted: false}
+    - {name: lightgbm, family: lightgbm, weighted: false}
+    - {name: lightgbm_weighted, family: lightgbm, weighted: true}
+  params:
+    logistic_regression: {C: 1.0, max_iter: 3000, clip_lower: 0.005, clip_upper: 0.995, min_category_frequency: 0.001}
+    random_forest: {n_estimators: 300, min_samples_leaf: 50, max_features: sqrt}
+    xgboost: {n_estimators: 3000, learning_rate: 0.03, max_depth: 6, min_child_weight: 20, subsample: 0.8, colsample_bytree: 0.6, reg_lambda: 1.0}
+    lightgbm: {n_estimators: 3000, learning_rate: 0.03, num_leaves: 31, min_child_samples: 100, subsample: 0.8, subsample_freq: 1, colsample_bytree: 0.6, reg_lambda: 1.0}
+
 risk_bands:
   # PROVISIONAL presentation bands, not validated banking standards.
   # Intervals are [lower, upper) except the last band, which includes 1.0.
