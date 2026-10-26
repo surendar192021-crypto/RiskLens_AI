@@ -14,3 +14,7 @@ target-version = "py312"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "B", "UP"]
+
+[tool.ruff.lint.per-file-ignores]
+# FEATURE_DESCRIPTIONS holds one-line prose descriptions; wrapping them hurts readability.
+"src/data/feature_engineering.py" = ["E501"]

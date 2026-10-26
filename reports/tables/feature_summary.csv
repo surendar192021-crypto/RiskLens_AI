@@ -1,0 +1,156 @@
+feature,source,type,pct_missing_train,univariate_auc_train,abs_auc_signal,description
+CNT_CHILDREN,application (raw),numeric,0.0,0.5181144912770512,0.018114491277051226,Number of children the client has
+AMT_INCOME_TOTAL,application (raw),numeric,0.0,0.47964251435312033,0.02035748564687967,Income of the client
+AMT_CREDIT,application (raw),numeric,0.0,0.48063235903137297,0.01936764096862703,Credit amount of the loan
+AMT_ANNUITY,application (raw),numeric,0.0032519443917509014,0.49776408337024697,0.002235916629753032,Loan annuity
+AMT_GOODS_PRICE,application (raw),numeric,0.09376439662881765,0.4657755953871661,0.03422440461283388,For consumer loans it is the price of the goods for which the loan is given
+REGION_POPULATION_RELATIVE,application (raw),numeric,0.0,0.4665844929151015,0.03341550708489849,Normalized population of region where client lives (higher number means the client lives in more populated region)
+DAYS_REGISTRATION,application (raw),numeric,0.0,0.5425343915875365,0.04253439158753647,How many days before the application did client change his registration
+DAYS_ID_PUBLISH,application (raw),numeric,0.0,0.5529401509279224,0.05294015092792237,How many days before the application did client change the identity document with which he applied for the loan
+OWN_CAR_AGE,application (raw),numeric,65.9857456437495,0.5590406901769093,0.05904069017690927,Age of client's car
+FLAG_MOBIL,application (raw),numeric,0.0,,,"Did client provide mobile phone (1=YES, 0=NO)"
+FLAG_EMP_PHONE,application (raw),numeric,0.0,0.5332358786022899,0.03323587860228994,"Did client provide work phone (1=YES, 0=NO)"
+FLAG_WORK_PHONE,application (raw),numeric,0.0,0.5210532617445971,0.021053261744597096,"Did client provide home phone (1=YES, 0=NO)"
+FLAG_CONT_MOBILE,application (raw),numeric,0.0,0.4999868151050973,1.3184894902706912e-05,"Was mobile phone reachable (1=YES, 0=NO)"
+FLAG_PHONE,application (raw),numeric,0.0,0.48009275966151904,0.019907240338480958,"Did client provide home phone (1=YES, 0=NO)"
+FLAG_EMAIL,application (raw),numeric,0.0,0.5000379008082267,3.790080822674291e-05,"Did client provide email (1=YES, 0=NO)"
+CNT_FAM_MEMBERS,application (raw),numeric,0.001083981463916967,0.5066005945619094,0.006600594561909423,How many family members does client have
+REGION_RATING_CLIENT,application (raw),numeric,0.0,0.5476274507717075,0.04762745077170749,"Our rating of the region where client lives (1,2,3)"
+REGION_RATING_CLIENT_W_CITY,application (raw),numeric,0.0,0.5495225380917027,0.049522538091702706,"Our rating of the region where client lives with taking city into account (1,2,3)"
+HOUR_APPR_PROCESS_START,application (raw),numeric,0.0,0.4739522984828362,0.02604770151716379,Approximately at what hour did the client apply for the loan
+REG_REGION_NOT_LIVE_REGION,application (raw),numeric,0.0,0.5012172204323713,0.0012172204323712688,"Flag if client's permanent address does not match contact address (1=different, 0=same, at region level)"
+REG_REGION_NOT_WORK_REGION,application (raw),numeric,0.0,0.5020838663551992,0.002083866355199193,"Flag if client's permanent address does not match work address (1=different, 0=same, at region level)"
+LIVE_REGION_NOT_WORK_REGION,application (raw),numeric,0.0,0.5004516133785566,0.00045161337855659234,"Flag if client's contact address does not match work address (1=different, 0=same, at region level)"
+REG_CITY_NOT_LIVE_CITY,application (raw),numeric,0.0,0.5219300330095933,0.021930033009593286,"Flag if client's permanent address does not match contact address (1=different, 0=same, at city level)"
+REG_CITY_NOT_WORK_CITY,application (raw),numeric,0.0,0.540217868394892,0.04021786839489205,"Flag if client's permanent address does not match work address (1=different, 0=same, at city level)"
+LIVE_CITY_NOT_WORK_CITY,application (raw),numeric,0.0,0.5236091489207284,0.023609148920728407,"Flag if client's contact address does not match work address (1=different, 0=same, at city level)"
+EXT_SOURCE_1,application (raw),numeric,56.22828649630092,0.3329847030955153,0.1670152969044847,Normalized score from external data source
+EXT_SOURCE_2,application (raw),numeric,0.2135443483916425,0.3469299683716074,0.1530700316283926,Normalized score from external data source
+EXT_SOURCE_3,application (raw),numeric,19.865586298474298,0.3195674307181593,0.1804325692818407,Normalized score from external data source
+APARTMENTS_AVG,application (raw),numeric,50.75797403864394,0.4600093250904498,0.03999067490955022,"Normalized information about building where the client lives, What is average (_AVG suffix), modus (_MODE suffix), median (_MEDI suffix) apartment size, common area, living area, age of building, number of elevators, number of entrances, state of the building, number of floor"
+BASEMENTAREA_AVG,application (raw),numeric,58.51548738516571,0.4729974927249594,0.02700250727504061,"Normalized information about building where the client lives, What is average (_AVG suffix), modus (_MODE suffix), median (_MEDI suffix) apartment size, common area, living area, age of building, number of elevators, number of entrances, state of the building, number of floor"
+YEARS_BEGINEXPLUATATION_AVG,application (raw),numeric,48.795425598222266,0.4669898644236171,0.03301013557638288,"Normalized information about building where the client lives, What is average (_AVG suffix), modus (_MODE suffix), median (_MEDI suffix) apartment size, common area, living area, age of building, number of elevators, number of entrances, state of the building, number of floor"
+YEARS_BUILD_AVG,application (raw),numeric,66.4843771171513,0.4727982562210667,0.027201743778933307,"Normalized information about building where the client lives, What is average (_AVG suffix), modus (_MODE suffix), median (_MEDI suffix) apartment size, common area, living area, age of building, number of elevators, number of entrances, state of the building, number of floor"
+COMMONAREA_AVG,application (raw),numeric,69.8799490528712,0.47674605196277164,0.023253948037228356,"Normalized information about building where the client lives, What is average (_AVG suffix), modus (_MODE suffix), median (_MEDI suffix) apartment size, common area, living area, age of building, number of elevators, number of entrances, state of the building, number of floor"
+ELEVATORS_AVG,application (raw),numeric,53.3210482100756,0.4574955969693535,0.04250440303064651,"Normalized information about building where the client lives, What is average (_AVG suffix), modus (_MODE suffix), median (_MEDI suffix) apartment size, common area, living area, age of building, number of elevators, number of entrances, state of the building, number of floor"
+ENTRANCES_AVG,application (raw),numeric,50.37532858188125,0.4728934542332081,0.02710654576679189,"Normalized information about building where the client lives, What is average (_AVG suffix), modus (_MODE suffix), median (_MEDI suffix) apartment size, common area, living area, age of building, number of elevators, number of entrances, state of the building, number of floor"
+FLOORSMAX_AVG,application (raw),numeric,49.7807647489228,0.4473611576960159,0.05263884230398408,"Normalized information about building where the client lives, What is average (_AVG suffix), modus (_MODE suffix), median (_MEDI suffix) apartment size, common area, living area, age of building, number of elevators, number of entrances, state of the building, number of floor"
+FLOORSMIN_AVG,application (raw),numeric,67.86049158559389,0.4648767676430298,0.03512323235697018,"Normalized information about building where the client lives, What is average (_AVG suffix), modus (_MODE suffix), median (_MEDI suffix) apartment size, common area, living area, age of building, number of elevators, number of entrances, state of the building, number of floor"
+LANDAREA_AVG,application (raw),numeric,59.390802417278664,0.4847355554129563,0.01526444458704368,"Normalized information about building where the client lives, What is average (_AVG suffix), modus (_MODE suffix), median (_MEDI suffix) apartment size, common area, living area, age of building, number of elevators, number of entrances, state of the building, number of floor"
+LIVINGAPARTMENTS_AVG,application (raw),numeric,68.38730657705753,0.46510255011207247,0.034897449887927534,"Normalized information about building where the client lives, What is average (_AVG suffix), modus (_MODE suffix), median (_MEDI suffix) apartment size, common area, living area, age of building, number of elevators, number of entrances, state of the building, number of floor"
+LIVINGAREA_AVG,application (raw),numeric,50.21164738082978,0.45114150685186094,0.04885849314813906,"Normalized information about building where the client lives, What is average (_AVG suffix), modus (_MODE suffix), median (_MEDI suffix) apartment size, common area, living area, age of building, number of elevators, number of entrances, state of the building, number of floor"
+NONLIVINGAPARTMENTS_AVG,application (raw),numeric,69.43443267120132,0.4923799767163814,0.007620023283618604,"Normalized information about building where the client lives, What is average (_AVG suffix), modus (_MODE suffix), median (_MEDI suffix) apartment size, common area, living area, age of building, number of elevators, number of entrances, state of the building, number of floor"
+NONLIVINGAREA_AVG,application (raw),numeric,55.17519850410558,0.48442397686703376,0.015576023132966244,"Normalized information about building where the client lives, What is average (_AVG suffix), modus (_MODE suffix), median (_MEDI suffix) apartment size, common area, living area, age of building, number of elevators, number of entrances, state of the building, number of floor"
+TOTALAREA_MODE,application (raw),numeric,48.29950407848026,0.4532144090611695,0.0467855909388305,"Normalized information about building where the client lives, What is average (_AVG suffix), modus (_MODE suffix), median (_MEDI suffix) apartment size, common area, living area, age of building, number of elevators, number of entrances, state of the building, number of floor"
+OBS_30_CNT_SOCIAL_CIRCLE,application (raw),numeric,0.3354922630823013,0.511350017065169,0.011350017065169027,How many observation of client's social surroundings with observable 30 DPD (days past due) default
+DEF_30_CNT_SOCIAL_CIRCLE,application (raw),numeric,0.3354922630823013,0.5180465714466389,0.018046571446638904,How many observation of client's social surroundings defaulted on 30 DPD (days past due) 
+OBS_60_CNT_SOCIAL_CIRCLE,application (raw),numeric,0.3354922630823013,0.511038175178314,0.011038175178313958,How many observation of client's social surroundings with observable 60 DPD (days past due) default
+DEF_60_CNT_SOCIAL_CIRCLE,application (raw),numeric,0.3354922630823013,0.5156386719633669,0.01563867196336688,How many observation of client's social surroundings defaulted on 60 (days past due) DPD
+DAYS_LAST_PHONE_CHANGE,application (raw),numeric,0.0,0.5542033784592304,0.0542033784592304,How many days before application did client change phone
+FLAG_DOCUMENT_2,application (raw),numeric,0.0,0.5000217788772892,2.177887728915806e-05,Did client provide document 2
+FLAG_DOCUMENT_3,application (raw),numeric,0.0,0.5381308247205024,0.03813082472050244,Did client provide document 3
+FLAG_DOCUMENT_4,application (raw),numeric,0.0,0.4999587290918631,4.127090813688117e-05,Did client provide document 4
+FLAG_DOCUMENT_5,application (raw),numeric,0.0,0.5002798350693569,0.00027983506935691516,Did client provide document 5
+FLAG_DOCUMENT_6,application (raw),numeric,0.0,0.485361536492325,0.014638463507675004,Did client provide document 6
+FLAG_DOCUMENT_7,application (raw),numeric,0.0,0.49996985970433405,3.0140295665948003e-05,Did client provide document 7
+FLAG_DOCUMENT_8,application (raw),numeric,0.0,0.4942866987375088,0.005713301262491199,Did client provide document 8
+FLAG_DOCUMENT_9,application (raw),numeric,0.0,0.49927699035984846,0.0007230096401515396,Did client provide document 9
+FLAG_DOCUMENT_10,application (raw),numeric,0.0,0.49999410415598045,5.895844019554453e-06,Did client provide document 10
+FLAG_DOCUMENT_11,application (raw),numeric,0.0,0.49960270882388164,0.00039729117611836395,Did client provide document 11
+FLAG_DOCUMENT_12,application (raw),numeric,0.0,,,Did client provide document 12
+FLAG_DOCUMENT_13,application (raw),numeric,0.0,0.4987606754965794,0.0012393245034206246,Did client provide document 13
+FLAG_DOCUMENT_14,application (raw),numeric,0.0,0.49898471756932233,0.0010152824306776664,Did client provide document 14
+FLAG_DOCUMENT_15,application (raw),numeric,0.0,0.49948279149715297,0.000517208502847033,Did client provide document 15
+FLAG_DOCUMENT_16,application (raw),numeric,0.0,0.49804327530034354,0.0019567246996564647,Did client provide document 16
+FLAG_DOCUMENT_17,application (raw),numeric,0.0,0.4999038619968982,9.613800310181997e-05,Did client provide document 17
+FLAG_DOCUMENT_18,application (raw),numeric,0.0,0.4988781983046781,0.001121801695321889,Did client provide document 18
+FLAG_DOCUMENT_19,application (raw),numeric,0.0,0.49987895646968356,0.00012104353031644477,Did client provide document 19
+FLAG_DOCUMENT_20,application (raw),numeric,0.0,0.5000268349178251,2.6834917825069304e-05,Did client provide document 20
+FLAG_DOCUMENT_21,application (raw),numeric,0.0,0.5001241163441477,0.00012411634414766226,Did client provide document 21
+AMT_REQ_CREDIT_BUREAU_HOUR,application (raw),numeric,13.553562234085797,0.5003905117531016,0.0003905117531015634,Number of enquiries to Credit Bureau about the client one hour before application
+AMT_REQ_CREDIT_BUREAU_DAY,application (raw),numeric,13.553562234085797,0.5009659627914745,0.0009659627914745395,Number of enquiries to Credit Bureau about the client one day before application (excluding one hour before application)
+AMT_REQ_CREDIT_BUREAU_WEEK,application (raw),numeric,13.553562234085797,0.5001839166687506,0.00018391666875061663,Number of enquiries to Credit Bureau about the client one week before application (excluding one day before application)
+AMT_REQ_CREDIT_BUREAU_MON,application (raw),numeric,13.553562234085797,0.49675141803782896,0.0032485819621710377,Number of enquiries to Credit Bureau about the client one month before application (excluding one week before application)
+AMT_REQ_CREDIT_BUREAU_QRT,application (raw),numeric,13.553562234085797,0.4944825264845843,0.005517473515415705,Number of enquiries to Credit Bureau about the client 3 month before application (excluding one month before application)
+AMT_REQ_CREDIT_BUREAU_YEAR,application (raw),numeric,13.553562234085797,0.5225592547815004,0.02255925478150045,Number of enquiries to Credit Bureau about the client one day year (excluding last 3 months before application)
+DAYS_EMPLOYED_PLACEHOLDER,application (engineered),numeric,0.0,0.4667570821304697,0.03324291786953032,1 if DAYS_EMPLOYED held the 365243 placeholder (almost all pensioners)
+CREDIT_INCOME_RATIO,application (engineered),numeric,0.0,0.49803036532578937,0.0019696346742106297,AMT_CREDIT / AMT_INCOME_TOTAL
+ANNUITY_INCOME_RATIO,application (engineered),numeric,0.0032519443917509014,0.5185002424313205,0.018500242431320535,AMT_ANNUITY / AMT_INCOME_TOTAL (repayment burden)
+CREDIT_ANNUITY_RATIO,application (engineered),numeric,0.0032519443917509014,0.4688861241097219,0.031113875890278087,AMT_CREDIT / AMT_ANNUITY (rough proxy for loan length)
+GOODS_CREDIT_RATIO,application (engineered),numeric,0.09376439662881765,0.42922440173965853,0.07077559826034147,AMT_GOODS_PRICE / AMT_CREDIT
+AGE_YEARS,application (engineered),numeric,0.0,0.41574482291316295,0.08425517708683705,Age at application in years (-DAYS_BIRTH / 365.25)
+EMPLOYED_YEARS,application (engineered),numeric,17.922007533671174,0.4164566519855016,0.08354334801449842,Current employment length in years (missing for placeholder rows)
+EMPLOYED_TO_AGE_RATIO,application (engineered),numeric,17.922007533671174,0.4294177827352538,0.07058221726474623,EMPLOYED_YEARS / AGE_YEARS
+INCOME_PER_FAMILY_MEMBER,application (engineered),numeric,0.001083981463916967,0.4814732854039555,0.01852671459604449,AMT_INCOME_TOTAL / CNT_FAM_MEMBERS
+EXT_SOURCE_MEAN,application (engineered),numeric,0.05961898051543319,0.28486035747155913,0.21513964252844087,Mean of available EXT_SOURCE_1-3
+EXT_SOURCE_MIN,application (engineered),numeric,0.05961898051543319,0.3105019309134645,0.1894980690865355,Minimum of available EXT_SOURCE_1-3
+EXT_SOURCE_N_MISSING,application (engineered),numeric,0.0,0.5271116048683211,0.027111604868321093,How many of EXT_SOURCE_1-3 are missing (0-3)
+DOCUMENT_COUNT,application (engineered),numeric,0.0,0.5109173706707801,0.010917370670780135,Number of FLAG_DOCUMENT_* flags set
+BUREAU_COUNT,bureau + bureau_balance,numeric,0.0,0.47590086008678645,0.024099139913213552,Number of credit bureau credits
+BUREAU_ACTIVE_COUNT,bureau + bureau_balance,numeric,0.0,0.5280775376119795,0.02807753761197951,Number of active bureau credits
+BUREAU_CLOSED_COUNT,bureau + bureau_balance,numeric,0.0,0.4452856704942364,0.054714329505763604,Number of closed bureau credits
+BUREAU_BAD_DEBT_OR_SOLD_COUNT,bureau + bureau_balance,numeric,0.0,0.5027416872148153,0.0027416872148152693,Number of bureau credits marked 'Bad debt' or 'Sold'
+BUREAU_DAYS_CREDIT_MAX,bureau + bureau_balance,numeric,14.361128424703937,0.5816404008286244,0.08164040082862445,Days before application of the most recent bureau credit
+BUREAU_DAYS_CREDIT_MIN,bureau + bureau_balance,numeric,14.361128424703937,0.5773547231057696,0.07735472310576963,Days before application of the oldest bureau credit
+BUREAU_ACTIVE_DEBT_SUM,bureau + bureau_balance,numeric,32.85168423619956,0.5354770985771296,0.03547709857712955,Total current debt on active bureau credits (currency 1 only)
+BUREAU_ACTIVE_CREDIT_SUM,bureau + bureau_balance,numeric,29.427928782417823,0.5008204943917698,0.0008204943917697882,Total credit amount of active bureau credits (currency 1 only)
+BUREAU_OVERDUE_SUM,bureau + bureau_balance,numeric,14.37359421153898,0.5068731672001338,0.006873167200133756,Total currently overdue amount on bureau credits (currency 1 only)
+BUREAU_MAX_OVERDUE_MAX,bureau + bureau_balance,numeric,40.29484295818542,0.545271882818672,0.045271882818672005,Largest overdue amount ever recorded on a bureau credit (currency 1 only)
+BUREAU_PROLONG_SUM,bureau + bureau_balance,numeric,14.361128424703937,0.5028489385685572,0.002848938568557169,Total number of times bureau credits were prolonged
+BUREAU_ACTIVE_DEBT_RATIO,bureau + bureau_balance,numeric,33.837565377632046,0.5865461933651237,0.0865461933651237,BUREAU_ACTIVE_DEBT_SUM / BUREAU_ACTIVE_CREDIT_SUM
+BUREAU_BB_WORST_STATUS_12M,bureau + bureau_balance,numeric,76.08899487818759,0.5397746781141165,0.0397746781141165,"Worst monthly DPD bucket (0-5) on any bureau credit, MONTHS_BALANCE >= -12"
+BUREAU_BB_DPD_CREDIT_COUNT,bureau + bureau_balance,numeric,0.0,0.511802882581934,0.01180288258193396,Number of bureau credits with any month in DPD bucket 1-5
+HAS_BUREAU,indicator,numeric,0.0,0.478853840908073,0.02114615909192702,1 if the applicant has any credit bureau record
+PREV_COUNT,previous_application,numeric,0.0,0.5207696524087702,0.020769652408770156,Number of previous Home Credit applications
+PREV_APPROVED_COUNT,previous_application,numeric,0.0,0.47848742987806175,0.021512570121938246,Number of previous applications approved
+PREV_REFUSED_COUNT,previous_application,numeric,0.0,0.5563477870650133,0.05634778706501331,Number of previous applications refused
+PREV_REFUSED_LAST_YEAR_COUNT,previous_application,numeric,0.0,0.5402385331421294,0.04023853314212944,Previous applications refused within 365 days before this application
+PREV_AMT_CREDIT_MEAN,previous_application,numeric,5.3825099590797,0.4777702404233688,0.022229759576631203,Mean final credit amount of previous applications
+PREV_AMT_ANNUITY_MEAN,previous_application,numeric,5.5125877347497365,0.46289095234958977,0.03710904765041023,Mean annuity of previous applications
+PREV_CREDIT_TO_APPLICATION_MEAN,previous_application,numeric,5.725048101677461,0.5729236110155964,0.07292361101559641,Mean of (granted AMT_CREDIT / requested AMT_APPLICATION)
+PREV_DAYS_DECISION_MAX,previous_application,numeric,5.3825099590797,0.5275070428841785,0.02750704288417849,Days before application of the most recent previous decision
+PREV_CNT_PAYMENT_MEAN,previous_application,numeric,5.512045744017778,0.5233353150352928,0.023335315035292847,Mean planned number of payments on previous credits
+PREV_APPROVAL_RATE,previous_application,numeric,5.3825099590797,0.4396494997262888,0.060350500273711194,PREV_APPROVED_COUNT / PREV_COUNT
+PREV_REFUSAL_RATE,previous_application,numeric,5.3825099590797,0.560086962495356,0.060086962495356055,PREV_REFUSED_COUNT / PREV_COUNT
+HAS_PREV,indicator,numeric,0.0,0.507620350487588,0.0076203504875880235,1 if the applicant has any previous Home Credit application
+INST_COUNT,installments_payments,numeric,0.0,0.48255552365582244,0.017444476344177562,Number of scheduled previous instalments (partial payments combined)
+INST_UNPAID_COUNT,installments_payments,numeric,0.0,0.5022287970792576,0.002228797079257605,Scheduled instalments with no recorded payment
+INST_LATE_SHARE,installments_payments,numeric,5.184141351182895,0.5657535435530623,0.06575354355306229,Share of paid instalments paid after the due day
+INST_LATE30_SHARE,installments_payments,numeric,5.184141351182895,0.5117244814916667,0.011724481491666716,Share of paid instalments paid more than 30 days late
+INST_DAYS_LATE_MEAN,installments_payments,numeric,5.184141351182895,0.5606040454908523,0.0606040454908523,Mean days late per paid instalment (early = 0)
+INST_DAYS_LATE_MAX,installments_payments,numeric,5.184141351182895,0.551137196866138,0.051137196866138046,Maximum days late on any instalment
+INST_UNDERPAID_SHARE,installments_payments,numeric,5.181973388255061,0.5055703111565523,0.005570311156552266,Share of instalments where total paid < amount due (by more than 0.01)
+INST_SHORTFALL_SUM,installments_payments,numeric,5.181973388255061,0.5188138358664739,0.018813835866473894,Total unpaid amount across instalments
+INST_LATE_SHARE_LAST_YEAR,installments_payments,numeric,29.37481369068589,0.5722190138683435,0.0722190138683435,INST_LATE_SHARE for instalments due within 365 days before application
+HAS_INST,indicator,numeric,0.0,0.5071504336287188,0.007150433628718811,1 if the applicant has any previous instalment record
+POS_MONTHS_COUNT,POS_CASH_balance,numeric,0.0,0.46853942796048026,0.03146057203951974,Number of monthly POS/cash loan records
+POS_LOAN_COUNT,POS_CASH_balance,numeric,0.0,0.4656102013261149,0.034389798673885086,Number of distinct previous POS/cash loans
+POS_DPD_MAX,POS_CASH_balance,numeric,5.897943145172217,0.5238537148461934,0.023853714846193363,Maximum days past due on POS/cash loans
+POS_DPD_DEF_MAX,POS_CASH_balance,numeric,5.897943145172217,0.5249918664777653,0.0249918664777653,Maximum days past due (with tolerance) on POS/cash loans
+POS_DPD_MONTH_SHARE,POS_CASH_balance,numeric,5.897943145172217,0.5254241094423,0.025424109442300002,Share of POS/cash months with DPD > 0
+POS_DPD_MAX_LAST_YEAR,POS_CASH_balance,numeric,32.8511422454676,0.5198329418124654,0.01983294181246542,Maximum POS/cash DPD with MONTHS_BALANCE >= -12
+HAS_POS,indicator,numeric,0.0,0.5058955318889604,0.005895531888960415,1 if the applicant has any previous POS/cash loan monthly record
+CC_MONTHS_COUNT,credit_card_balance,numeric,0.0,0.5080815678690774,0.008081567869077433,Number of monthly credit card records
+CC_UTILISATION_MEAN,credit_card_balance,numeric,71.96769735237527,0.6250208443846129,0.12502084438461292,Mean of balance / credit limit (months with limit > 0)
+CC_UTILISATION_MAX,credit_card_balance,numeric,71.96769735237527,0.6061667933479448,0.10616679334794477,Maximum of balance / credit limit
+CC_UTILISATION_MEAN_LAST_YEAR,credit_card_balance,numeric,76.77190320045527,0.6349679909129176,0.13496799091291756,Mean utilisation with MONTHS_BALANCE >= -12
+CC_DPD_MAX,credit_card_balance,numeric,71.68477819029295,0.49925543215664986,0.0007445678433501413,Maximum days past due on credit cards
+CC_DPD_MONTH_SHARE,credit_card_balance,numeric,71.68477819029295,0.4987622073377768,0.0012377926622231805,Share of credit card months with DPD > 0
+CC_DRAWINGS_MEAN,credit_card_balance,numeric,71.68477819029295,0.6023811748632112,0.10238117486321119,Mean monthly drawn amount on credit cards
+HAS_CC,indicator,numeric,0.0,0.512990753040419,0.012990753040418968,1 if the applicant has any previous credit card monthly record
+NAME_CONTRACT_TYPE,application (raw),categorical,0.0,,,Identification if loan is cash or revolving
+CODE_GENDER,application (raw),categorical,0.0005419907319584835,,,Gender of the client
+FLAG_OWN_CAR,application (raw),categorical,0.0,,,Flag if the client owns a car
+FLAG_OWN_REALTY,application (raw),categorical,0.0,,,Flag if client owns a house or flat
+NAME_TYPE_SUITE,application (raw),categorical,0.42383675239153407,,,Who was accompanying client when he was applying for the loan
+NAME_INCOME_TYPE,application (raw),categorical,0.0,,,"Clients income type (businessman, working, maternity leave,)"
+NAME_EDUCATION_TYPE,application (raw),categorical,0.0,,,Level of highest education the client achieved
+NAME_FAMILY_STATUS,application (raw),categorical,0.001083981463916967,,,Family status of the client
+NAME_HOUSING_TYPE,application (raw),categorical,0.0,,,"What is the housing situation of the client (renting, living with parents, ...)"
+OCCUPATION_TYPE,application (raw),categorical,31.252269586190074,,,What kind of occupation does the client have
+WEEKDAY_APPR_PROCESS_START,application (raw),categorical,0.0,,,On which day of the week did the client apply for the loan
+ORGANIZATION_TYPE,application (raw),categorical,0.0,,,Type of organization where client works
+FONDKAPREMONT_MODE,application (raw),categorical,68.36671092924311,,,"Normalized information about building where the client lives, What is average (_AVG suffix), modus (_MODE suffix), median (_MEDI suffix) apartment size, common area, living area, age of building, number of elevators, number of entrances, state of the building, number of floor"
+HOUSETYPE_MODE,application (raw),categorical,50.1867158071597,,,"Normalized information about building where the client lives, What is average (_AVG suffix), modus (_MODE suffix), median (_MEDI suffix) apartment size, common area, living area, age of building, number of elevators, number of entrances, state of the building, number of floor"
+WALLSMATERIAL_MODE,application (raw),categorical,50.858242324056256,,,"Normalized information about building where the client lives, What is average (_AVG suffix), modus (_MODE suffix), median (_MEDI suffix) apartment size, common area, living area, age of building, number of elevators, number of entrances, state of the building, number of floor"
+EMERGENCYSTATE_MODE,application (raw),categorical,47.43069293515081,,,"Normalized information about building where the client lives, What is average (_AVG suffix), modus (_MODE suffix), median (_MEDI suffix) apartment size, common area, living area, age of building, number of elevators, number of entrances, state of the building, number of floor"
