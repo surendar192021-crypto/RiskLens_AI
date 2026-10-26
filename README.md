@@ -9,8 +9,9 @@ guarantee future defaults.
 | Phase | Status |
 |---|---|
 | 0. Requirements and feasibility | Done (plan agreed) |
-| 1. Environment and project structure | In progress (dataset not yet in `data/raw/`) |
-| 2+ | Not started |
+| 1. Environment and project structure | Done (all 10 dataset files in `data/raw/`) |
+| 2. Dataset audit | Done: `python -m scripts.run_audit` → [docs/dataset_audit.md](docs/dataset_audit.md), findings in [docs/dataset_audit_findings.md](docs/dataset_audit_findings.md) |
+| 3+ | Not started |
 
 ## Setup (Windows PowerShell)
 

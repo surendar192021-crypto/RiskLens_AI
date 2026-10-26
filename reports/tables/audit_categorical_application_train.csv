@@ -1,0 +1,17 @@
+column,n_unique,n_missing,top_values
+NAME_CONTRACT_TYPE,2,0,Cash loans (90.5%); Revolving loans (9.5%)
+CODE_GENDER,3,0,F (65.8%); M (34.2%); XNA (0.0%)
+FLAG_OWN_CAR,2,0,N (66.0%); Y (34.0%)
+FLAG_OWN_REALTY,2,0,Y (69.4%); N (30.6%)
+NAME_TYPE_SUITE,7,1292,"Unaccompanied (81.2%); Family (13.1%); Spouse, partner (3.7%); Children (1.1%); Other_B (0.6%)"
+NAME_INCOME_TYPE,8,0,Working (51.6%); Commercial associate (23.3%); Pensioner (18.0%); State servant (7.1%); Unemployed (0.0%)
+NAME_EDUCATION_TYPE,5,0,Secondary / secondary special (71.0%); Higher education (24.3%); Incomplete higher (3.3%); Lower secondary (1.2%); Academic degree (0.1%)
+NAME_FAMILY_STATUS,6,0,Married (63.9%); Single / not married (14.8%); Civil marriage (9.7%); Separated (6.4%); Widow (5.2%)
+NAME_HOUSING_TYPE,6,0,House / apartment (88.7%); With parents (4.8%); Municipal apartment (3.6%); Rented apartment (1.6%); Office apartment (0.9%)
+OCCUPATION_TYPE,18,96391,Laborers (26.1%); Sales staff (15.2%); Core staff (13.1%); Managers (10.1%); Drivers (8.8%)
+WEEKDAY_APPR_PROCESS_START,7,0,TUESDAY (17.5%); WEDNESDAY (16.9%); MONDAY (16.5%); THURSDAY (16.5%); FRIDAY (16.4%)
+ORGANIZATION_TYPE,58,0,Business Entity Type 3 (22.1%); XNA (18.0%); Self-employed (12.5%); Other (5.4%); Medicine (3.6%)
+FONDKAPREMONT_MODE,4,210295,reg oper account (75.9%); reg oper spec account (12.4%); not specified (5.8%); org spec account (5.8%)
+HOUSETYPE_MODE,3,154297,block of flats (98.2%); specific housing (1.0%); terraced house (0.8%)
+WALLSMATERIAL_MODE,7,156341,"Panel (43.7%); Stone, brick (42.9%); Block (6.1%); Wooden (3.5%); Mixed (1.5%)"
+EMERGENCYSTATE_MODE,2,145755,No (98.6%); Yes (1.4%)

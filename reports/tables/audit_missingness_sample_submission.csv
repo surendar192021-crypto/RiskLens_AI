@@ -1,0 +1,3 @@
+column,dtype,n_missing,pct_missing
+SK_ID_CURR,int32,0,0.0
+TARGET,float64,0,0.0

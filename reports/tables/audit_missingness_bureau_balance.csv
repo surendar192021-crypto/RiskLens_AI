@@ -1,0 +1,4 @@
+column,dtype,n_missing,pct_missing
+MONTHS_BALANCE,int8,0,0.0
+SK_ID_BUREAU,int32,0,0.0
+STATUS,category,0,0.0
