@@ -36,7 +36,7 @@ modelling:
   # Champion = highest validation PR-AUC (suited to an 8% positive class); ties broken by Brier score.
   selection_metric: pr_auc
   bootstrap_resamples: 300          # for 95% confidence intervals of validation ROC-AUC / PR-AUC
-  early_stopping_rounds: 100        # boosting stops when validation log-loss stops improving
+  early_stopping_rounds: 100        # stop when validation log-loss (weighted models: ROC-AUC) stops improving
   # Each experiment = model family + imbalance treatment. "weighted" reweights positives
   # by negatives/positives on the training split; no resampling (e.g. SMOTE) is used.
   experiments:

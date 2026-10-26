@@ -70,12 +70,19 @@ def boosting_pipeline(
     Both use pandas categorical columns natively and handle missing values themselves.
     Validation is used only to decide when to stop adding trees (model selection),
     never to fit the trees.
+
+    Stopping metric: log-loss for unweighted models. Class-weighted models push all
+    probabilities upwards on purpose, so their unweighted validation log-loss gets
+    worse from the first tree and would stop training almost immediately; they stop
+    on validation ROC-AUC instead, which only depends on the ranking.
     """
+    weighted = pos_weight != 1.0
     frame = FeatureFrame(numeric, categorical).fit(X_tr)
     Xt, Xv = frame.transform(X_tr), frame.transform(X_val)
     if family == "xgboost":
         model = xgb.XGBClassifier(
-            **params, tree_method="hist", enable_categorical=True, eval_metric="logloss",
+            **params, tree_method="hist", enable_categorical=True,
+            eval_metric="auc" if weighted else "logloss",
             early_stopping_rounds=early_stopping, scale_pos_weight=pos_weight,
             random_state=seed, n_jobs=-1,
         )
@@ -83,11 +90,12 @@ def boosting_pipeline(
         best = int(model.best_iteration) + 1
     elif family == "lightgbm":
         model = lgb.LGBMClassifier(
-            **params, scale_pos_weight=pos_weight, random_state=seed, n_jobs=-1, verbose=-1
+            **params, scale_pos_weight=pos_weight, random_state=seed, n_jobs=-1, verbose=-1,
+            metric="auc" if weighted else "binary_logloss",
         )
         model.fit(
-            Xt, y_tr, eval_set=[(Xv, y_val)], eval_metric="binary_logloss",
-            callbacks=[lgb.early_stopping(early_stopping, verbose=False)],
+            Xt, y_tr, eval_X=(Xv,), eval_y=(y_val,),
+            callbacks=[lgb.early_stopping(early_stopping, first_metric_only=True, verbose=False)],
         )
         best = int(model.best_iteration_)
     else:
@@ -246,7 +254,10 @@ def train_all(cfg: dict[str, Any]) -> dict[str, Any]:
             + (f", trees={extra['best_iteration']}" if "best_iteration" in extra else ""),
             "seed": seed,
             "imbalance": "class weights" if weighted else "none",
-            "notes": "validation used for early stopping" if "best_iteration" in extra else "",
+            "notes": (
+                f"early stopping on validation {'ROC-AUC' if weighted else 'log-loss'}"
+                if "best_iteration" in extra else ""
+            ),
             **row,
         })
 
