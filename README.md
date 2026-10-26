@@ -12,7 +12,8 @@ guarantee future defaults.
 | 1. Environment and project structure | Done (all 10 dataset files in `data/raw/`) |
 | 2. Dataset audit | Done: `python -m scripts.run_audit` → [docs/dataset_audit.md](docs/dataset_audit.md), findings in [docs/dataset_audit_findings.md](docs/dataset_audit_findings.md) |
 | 3. Feature engineering and modelling table | Done: `python -m scripts.build_dataset` → `data/processed/`, [docs/data_dictionary.md](docs/data_dictionary.md), [docs/feature_engineering.md](docs/feature_engineering.md) |
-| 4+ | Not started |
+| 4. Model training and comparison | Done: `python -m scripts.train_models` → champion LightGBM, challenger XGBoost; [docs/model_training.md](docs/model_training.md) |
+| 5+ | Not started |
 
 ## Setup (Windows PowerShell)
 
