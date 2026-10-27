@@ -55,8 +55,9 @@ def matrix_power(P: pd.DataFrame, k: int) -> pd.DataFrame:
 def wilson_interval(successes: np.ndarray, n: np.ndarray, z: float = 1.96) -> tuple:
     """95% Wilson score interval for a binomial proportion (works near 0 and 1)."""
     successes, n = np.asarray(successes, float), np.asarray(n, float)
-    p = np.divide(successes, n, out=np.full_like(n, np.nan), where=n > 0)
-    denom = 1 + z ** 2 / n
-    centre = (p + z ** 2 / (2 * n)) / denom
-    half = z * np.sqrt(p * (1 - p) / n + z ** 2 / (4 * n ** 2)) / denom
+    with np.errstate(divide="ignore", invalid="ignore"):  # n = 0 -> interval is NaN
+        p = np.divide(successes, n, out=np.full_like(n, np.nan), where=n > 0)
+        denom = 1 + z ** 2 / n
+        centre = (p + z ** 2 / (2 * n)) / denom
+        half = z * np.sqrt(p * (1 - p) / n + z ** 2 / (4 * n ** 2)) / denom
     return centre - half, centre + half

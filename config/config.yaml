@@ -151,6 +151,22 @@ rating_migration:
   states: ["0", "1", "2", "3", "4", "5", "C", "X"]
   horizon_check_months: 12          # compare P^12 (Markov assumption) with observed 12-month moves
 
+monitoring:
+  # PSI rule of thumb from credit-scorecard practice (< 0.10 stable, 0.10-0.25 moderate,
+  # > 0.25 major). A convention, not a statistical test; see docs/monitoring_and_fairness.md.
+  psi_bins: 10
+  psi_thresholds: {moderate: 0.10, major: 0.25}
+  important_features: 20            # top features by SHAP (Phase 6) watched more closely
+  review_rule:                      # raise a REVIEW flag (never an automatic retrain) if
+    prediction_psi: 0.10            #   model-score PSI reaches this, or
+    major_drift_important_features: 3   # this many important features show major drift
+
+fairness:
+  groups: [CODE_GENDER, AGE_BAND]
+  min_group_size: 500               # smaller groups are reported but marked as unreliable
+  parity_ratio_reference: 0.8       # "four-fifths" convention, shown for reference only
+  retrain_without: [CODE_GENDER]    # comparison experiment; the result is NOT deployed
+
 risk_bands:
   # PROVISIONAL presentation bands, not validated banking standards.
   # Intervals are [lower, upper) except the last band, which includes 1.0.
