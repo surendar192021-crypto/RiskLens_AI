@@ -23,6 +23,25 @@ def assign_risk_band(p: Any, edges: list[float], labels: list[str]) -> pd.Catego
     return pd.Categorical.from_codes(idx, categories=labels, ordered=True)
 
 
+def score_portfolio(
+    model: Any, df: pd.DataFrame, current: dict[str, Any], bands: dict[str, Any],
+    scored_at: str, id_col: str = "SK_ID_CURR",
+) -> pd.DataFrame:
+    """Borrower-level scores through the single scoring path."""
+    from src.models.predict import predict_proba
+
+    p = predict_proba(model, df)
+    return pd.DataFrame({
+        id_col: df[id_col].to_numpy(),
+        "probability": p,
+        "risk_band": assign_risk_band(p, bands["edges"], bands["labels"]),
+        "above_threshold": p >= current["threshold"],
+        "model_version": current["model_version"],
+        "calibration": current["calibration_method"],
+        "scored_at": scored_at,
+    })
+
+
 def band_distribution(
     p: Any, edges: list[float], labels: list[str], y: Any = None
 ) -> pd.DataFrame:

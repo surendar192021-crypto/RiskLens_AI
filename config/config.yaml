@@ -76,6 +76,35 @@ counterfactuals:
   plausibility_quantiles: [0.005, 0.995]           # new amounts must stay inside the training range
   evaluation_sample: 500                           # flagged test borrowers used to measure feasibility
 
+survival:
+  dpd_event: 30                     # event = first instalment paid more than 30 days late
+  horizons_days: [90, 180, 365, 730]
+  cox_sample_loans: 200000          # loans used to fit Cox (training-split applicants only)
+  ph_test_sample_loans: 20000       # proportional-hazards test is slow on large samples
+
+early_warning:
+  # PD at or above value -> level. Sources (docs/early_warning.md):
+  levels:
+    red: 0.40                       # PD >= 40%: observed TARGET rate 45-68% (Phase 5 bands); no loan-term counterfactual reaches the threshold (Phase 6)
+    orange: operating_threshold     # = threshold in models/current_model.json (0.162, max-F1 on validation)
+    yellow: 0.105                   # validation threshold that catches 60% of difficulty cases (Phase 5)
+  # If true, a red flag raises the level by one step (never above orange). Off by default:
+  # on VALIDATION, PD-green borrowers with a flag had a 5.8-8.6% TARGET rate, about the same as
+  # the 8.07% average, so escalating them adds review load for little gain. Flags are still
+  # shown on every alert as context (docs/early_warning.md).
+  flag_escalation: false
+  flags:                            # factual pre-application signals; missing value = flag not raised
+    bureau_overdue_now:      {feature: BUREAU_OVERDUE_SUM,             op: ">",  value: 0,   text: "amount currently overdue on a credit bureau loan"}
+    bureau_dpd31_last_year:  {feature: BUREAU_BB_WORST_STATUS_12M,     op: ">=", value: 2,   text: "31+ days past due on a bureau loan in the last 12 months"}
+    pos_dpd30_last_year:     {feature: POS_DPD_MAX_LAST_YEAR,          op: ">",  value: 30,  text: "30+ days past due on a previous POS/cash loan in the last 12 months"}
+    refused_twice_last_year: {feature: PREV_REFUSED_LAST_YEAR_COUNT,   op: ">=", value: 2,   text: "2+ refused applications in the last year"}
+    card_utilisation_90:     {feature: CC_UTILISATION_MEAN_LAST_YEAR,  op: ">",  value: 0.9, text: "average credit card utilisation above 90% in the last year"}
+  actions:
+    green:  "No action: routine monitoring"
+    yellow: "Watch list: include in the next periodic portfolio review"
+    orange: "Manual review: check affordability and recent repayment history before deciding"
+    red:    "Senior credit review: full manual assessment required; model output alone is not a decision"
+
 risk_bands:
   # PROVISIONAL presentation bands, not validated banking standards.
   # Intervals are [lower, upper) except the last band, which includes 1.0.

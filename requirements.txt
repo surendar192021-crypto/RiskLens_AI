@@ -11,6 +11,7 @@ shap
 plotly
 matplotlib
 streamlit
+lifelines
 pyyaml
 joblib
 pytest
