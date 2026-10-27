@@ -118,6 +118,39 @@ expected_loss:
   lgd: 0.45
   lgd_sensitivity: [0.25, 0.45, 0.65, 0.85]
 
+monte_carlo:
+  # Vasicek one-factor Gaussian model. rho = asset correlation: an ASSUMPTION (no data to
+  # estimate it). 0.10 lies inside the Basel II "other retail" range (0.03-0.16), used only
+  # as a reference point. "basel_other_retail" = the Basel formula applied to each borrower's PD.
+  n_simulations: 5000
+  seed: 42
+  chunk_size: 250                   # simulations per batch (memory); part of the reproducible setup
+  rho: 0.10
+  rho_sensitivity: [0.0, 0.03, 0.10, 0.16, 0.25, basel_other_retail]
+  confidence_levels: [0.95, 0.99, 0.999]
+
+stress_testing:
+  # Feature-perturbation scenarios, rescored by the deployed model. HYPOTHETICAL: not
+  # calibrated to any macroeconomic data. Keys:
+  #   income_cut: all incomes x (1 - value)          annuity_rise: all annuities x (1 + value)
+  #   ext_source_cut: EXT_SOURCE_1-3 x (1 - value)   job_loss_share: share of employed borrowers
+  #   income_after_job_loss: their income factor      lgd: LGD override for this scenario
+  n_simulations: 2000
+  scenarios:
+    baseline: {}
+    income_shock: {income_cut: 0.20}
+    repayment_burden: {annuity_rise: 0.15}
+    external_score_shock: {ext_source_cut: 0.10}
+    employment_shock: {job_loss_share: 0.10, income_after_job_loss: 0.5}
+    combined_adverse: {income_cut: 0.20, annuity_rise: 0.15, ext_source_cut: 0.10,
+                       job_loss_share: 0.10, income_after_job_loss: 0.5, lgd: 0.55}
+
+rating_migration:
+  # Observed monthly overdue-status transitions of bureau credits (bureau_balance),
+  # restricted to training-split applicants.
+  states: ["0", "1", "2", "3", "4", "5", "C", "X"]
+  horizon_check_months: 12          # compare P^12 (Markov assumption) with observed 12-month moves
+
 risk_bands:
   # PROVISIONAL presentation bands, not validated banking standards.
   # Intervals are [lower, upper) except the last band, which includes 1.0.

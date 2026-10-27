@@ -130,6 +130,21 @@ def loan_ratio_features(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
+def ext_source_features(df: pd.DataFrame) -> pd.DataFrame:
+    """(Re)compute the EXT_SOURCE summaries in place (shared with stress scenarios)."""
+    ext = df[EXT_SOURCES]
+    df["EXT_SOURCE_MEAN"] = ext.mean(axis=1)
+    df["EXT_SOURCE_MIN"] = ext.min(axis=1)
+    df["EXT_SOURCE_N_MISSING"] = ext.isna().sum(axis=1).astype("int8")
+    return df
+
+
+def employment_features(df: pd.DataFrame) -> pd.DataFrame:
+    """(Re)compute EMPLOYED_TO_AGE_RATIO in place from EMPLOYED_YEARS and AGE_YEARS."""
+    df["EMPLOYED_TO_AGE_RATIO"] = safe_divide(df["EMPLOYED_YEARS"], df["AGE_YEARS"])
+    return df
+
+
 def add_application_features(df: pd.DataFrame) -> pd.DataFrame:
     """Add ratio and life-cycle features. Expects `clean_application` to have run.
 
@@ -147,12 +162,9 @@ def add_application_features(df: pd.DataFrame) -> pd.DataFrame:
     out = loan_ratio_features(df.copy())
     out["AGE_YEARS"] = -out["DAYS_BIRTH"] / DAYS_PER_YEAR
     out["EMPLOYED_YEARS"] = -out["DAYS_EMPLOYED"] / DAYS_PER_YEAR
-    out["EMPLOYED_TO_AGE_RATIO"] = safe_divide(out["EMPLOYED_YEARS"], out["AGE_YEARS"])
+    employment_features(out)
     out["INCOME_PER_FAMILY_MEMBER"] = safe_divide(out["AMT_INCOME_TOTAL"], out["CNT_FAM_MEMBERS"])
-    ext = out[EXT_SOURCES]
-    out["EXT_SOURCE_MEAN"] = ext.mean(axis=1)
-    out["EXT_SOURCE_MIN"] = ext.min(axis=1)
-    out["EXT_SOURCE_N_MISSING"] = ext.isna().sum(axis=1).astype("int8")
+    ext_source_features(out)
     doc_cols = [c for c in out.columns if c.startswith("FLAG_DOCUMENT_")]
     out["DOCUMENT_COUNT"] = out[doc_cols].sum(axis=1).astype("int16") if doc_cols else 0
     return out.drop(columns=["DAYS_BIRTH", "DAYS_EMPLOYED"])
