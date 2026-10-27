@@ -64,6 +64,18 @@ thresholds:
   cost_fp: 1.0                      # ... a false alarm. Illustrative, not a bank's real cost ratio.
   recall_target: 0.60
 
+explainability:
+  shap_sample_size: 5000            # test borrowers used for global SHAP (random, seeded)
+  top_n: 20                         # features shown in global plots
+
+counterfactuals:
+  # Only the loan's own terms may change; borrower history and characteristics are locked.
+  # Target: the operating threshold in models/current_model.json.
+  credit_factor: {min: 0.5, max: 1.0, steps: 11}   # new loan amount = factor x requested amount
+  term_factor: {min: 0.75, max: 1.5, steps: 7}     # new repayment period = factor x original
+  plausibility_quantiles: [0.005, 0.995]           # new amounts must stay inside the training range
+  evaluation_sample: 500                           # flagged test borrowers used to measure feasibility
+
 risk_bands:
   # PROVISIONAL presentation bands, not validated banking standards.
   # Intervals are [lower, upper) except the last band, which includes 1.0.

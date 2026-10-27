@@ -111,6 +111,25 @@ def safe_divide(numerator: pd.Series, denominator: pd.Series) -> pd.Series:
 # Application table
 # ---------------------------------------------------------------------------
 
+LOAN_RATIO_FEATURES = [
+    "CREDIT_INCOME_RATIO", "ANNUITY_INCOME_RATIO", "CREDIT_ANNUITY_RATIO", "GOODS_CREDIT_RATIO",
+]
+
+
+def loan_ratio_features(df: pd.DataFrame) -> pd.DataFrame:
+    """(Re)compute the ratios that depend on the loan amounts, in place.
+
+    The single definition used both when building the dataset and when
+    counterfactual or stress scenarios change AMT_CREDIT / AMT_ANNUITY /
+    AMT_GOODS_PRICE, so derived features can never fall out of sync.
+    """
+    df["CREDIT_INCOME_RATIO"] = safe_divide(df["AMT_CREDIT"], df["AMT_INCOME_TOTAL"])
+    df["ANNUITY_INCOME_RATIO"] = safe_divide(df["AMT_ANNUITY"], df["AMT_INCOME_TOTAL"])
+    df["CREDIT_ANNUITY_RATIO"] = safe_divide(df["AMT_CREDIT"], df["AMT_ANNUITY"])
+    df["GOODS_CREDIT_RATIO"] = safe_divide(df["AMT_GOODS_PRICE"], df["AMT_CREDIT"])
+    return df
+
+
 def add_application_features(df: pd.DataFrame) -> pd.DataFrame:
     """Add ratio and life-cycle features. Expects `clean_application` to have run.
 
@@ -125,11 +144,7 @@ def add_application_features(df: pd.DataFrame) -> pd.DataFrame:
     )
     if (df["DAYS_EMPLOYED"] == DAYS_PLACEHOLDER).any():
         raise ValueError("DAYS_EMPLOYED still contains the placeholder: run clean_application first")
-    out = df.copy()
-    out["CREDIT_INCOME_RATIO"] = safe_divide(out["AMT_CREDIT"], out["AMT_INCOME_TOTAL"])
-    out["ANNUITY_INCOME_RATIO"] = safe_divide(out["AMT_ANNUITY"], out["AMT_INCOME_TOTAL"])
-    out["CREDIT_ANNUITY_RATIO"] = safe_divide(out["AMT_CREDIT"], out["AMT_ANNUITY"])
-    out["GOODS_CREDIT_RATIO"] = safe_divide(out["AMT_GOODS_PRICE"], out["AMT_CREDIT"])
+    out = loan_ratio_features(df.copy())
     out["AGE_YEARS"] = -out["DAYS_BIRTH"] / DAYS_PER_YEAR
     out["EMPLOYED_YEARS"] = -out["DAYS_EMPLOYED"] / DAYS_PER_YEAR
     out["EMPLOYED_TO_AGE_RATIO"] = safe_divide(out["EMPLOYED_YEARS"], out["AGE_YEARS"])

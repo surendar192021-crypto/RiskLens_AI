@@ -1,0 +1,2 @@
+sample_size,flagged_test_borrowers,found_rate,found_with_term_only,found_needing_credit_cut,median_credit_factor_found,median_term_factor_found,median_probability_drop_found,median_best_achievable_not_found
+500,5973,0.54,0.45555555555555555,0.5444444444444444,0.95,1.125,0.05008976909716671,0.22494111814639556
