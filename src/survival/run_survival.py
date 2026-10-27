@@ -157,9 +157,12 @@ def run(cfg: dict[str, Any]) -> dict[str, Any]:
     eval_c = concordance_index(eval_df["duration"],
                                -cph.predict_partial_hazard(eval_df).to_numpy(),
                                eval_df["event"])
+    # lifelines' PH test must use the model's own training data, and is slow on 200k
+    # rows, so the same specification is refitted on a random subsample for the test.
     ph_sample = fit_df.sample(n=min(scfg["ph_test_sample_loans"], len(fit_df)), random_state=seed)
-    ph = proportional_hazard_test(cph, ph_sample.drop(columns="SK_ID_CURR"),
-                                  time_transform="rank")
+    ph_data = ph_sample.drop(columns="SK_ID_CURR")
+    cph_ph = CoxPHFitter().fit(ph_data, duration_col="duration", event_col="event")
+    ph = proportional_hazard_test(cph_ph, ph_data, time_transform="rank")
     ph_df = ph.summary.reset_index().rename(columns={"index": "covariate"})
     ph_df.to_csv(tables / "survival_ph_test.csv", index=False)
     fig, ax = plt.subplots(figsize=(7, 4))
