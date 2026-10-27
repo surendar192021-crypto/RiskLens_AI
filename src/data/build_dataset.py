@@ -18,6 +18,7 @@ import gc
 import json
 import time
 from datetime import datetime
+from pathlib import Path
 from typing import Any
 
 import numpy as np
@@ -81,7 +82,15 @@ def univariate_auc(x: pd.Series, y: pd.Series) -> float | None:
     return float(roc_auc_score(y[mask], x[mask]))
 
 
-def build(cfg: dict[str, Any]) -> dict[str, Any]:
+def build(cfg: dict[str, Any], out_dir: Path | None = None,
+          side_outputs: bool = True) -> dict[str, Any]:
+    """Build the modelling table.
+
+    out_dir: where the parquet files and feature list go (default data/processed).
+    side_outputs: also write the feature summary, data dictionary and build summary.
+    The reproducibility check uses a temporary out_dir with side_outputs=False, so it
+    never overwrites the project's files.
+    """
     start = time.time()
     target = cfg["data"]["target_column"]
     seed = cfg["project"]["random_seed"]
@@ -167,7 +176,7 @@ def build(cfg: dict[str, Any]) -> dict[str, Any]:
 
     # 6. Save
     log("Saving")
-    out_dir = project_path(cfg, "processed_data")
+    out_dir = Path(out_dir) if out_dir is not None else project_path(cfg, "processed_data")
     out_dir.mkdir(parents=True, exist_ok=True)
     modelling = apps.loc[is_train].reset_index(drop=True)
     modelling[target] = modelling[target].astype("int8")
@@ -179,6 +188,11 @@ def build(cfg: dict[str, Any]) -> dict[str, Any]:
         json.dump({"dataset_version": DATASET_VERSION, "id": ID, "target": target,
                    "numeric": numeric, "categorical": categorical,
                    "excluded": [ID, target]}, f, indent=2)
+
+    if not side_outputs:
+        summary["runtime_seconds"] = round(time.time() - start, 1)
+        log(f"Done in {summary['runtime_seconds']} s (no side outputs)")
+        return summary
 
     # 7. Feature summary on the TRAINING split only (validation/test untouched)
     log("Feature summary (training split only)")

@@ -229,7 +229,7 @@ def aggregate_bureau(
     b["_active_credit"] = b["AMT_CREDIT_SUM"].where(active)
     if bureau_balance is not None:
         bb = bureau_balance_per_credit(bureau_balance)
-        b = b.merge(bb, left_on="SK_ID_BUREAU", right_index=True, how="left")
+        b = _merge_on_index(b, bb, "SK_ID_BUREAU")
 
     g = b.groupby(ID)
     out = pd.DataFrame(
@@ -417,6 +417,20 @@ def aggregate_credit_card(cc: pd.DataFrame) -> pd.DataFrame:
     )
 
 
+def _merge_on_index(left: pd.DataFrame, right: pd.DataFrame, key: str) -> pd.DataFrame:
+    """Left-join `right` (indexed by key) onto `left[key]`.
+
+    The keys are compared as int64. Loaded tables use compact integer types (e.g. int32),
+    and pandas 2.x cannot join an int32 column to an int32 index (Buffer dtype mismatch).
+    The key column in the result keeps its original type.
+    """
+    r = right.copy()
+    r.index = r.index.astype("int64")
+    tmp = "__merge_key__"
+    out = left.assign(**{tmp: left[key].astype("int64")})
+    return out.merge(r, left_on=tmp, right_index=True, how="left").drop(columns=tmp)
+
+
 def join_aggregate(
     base: pd.DataFrame, agg: pd.DataFrame, flag: str
 ) -> pd.DataFrame:
@@ -428,7 +442,7 @@ def join_aggregate(
     if not agg.index.is_unique:
         raise ValueError(f"{flag}: aggregate has duplicate {ID} values")
     n_before = len(base)
-    out = base.merge(agg, left_on=ID, right_index=True, how="left")
+    out = _merge_on_index(base, agg, ID)
     if len(out) != n_before:
         raise AssertionError(f"{flag}: join changed row count {n_before} -> {len(out)}")
     out[flag] = out[ID].isin(agg.index).astype("int8")

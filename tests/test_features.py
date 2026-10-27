@@ -195,6 +195,44 @@ def test_join_aggregate_keeps_rows_and_fills_counts_only():
     assert out["X_MEAN"].isna().sum() == 2
 
 
+def _raw_available() -> bool:
+    from src.data.load_data import raw_path
+
+    return raw_path("bureau").exists() and raw_path("bureau_balance").exists()
+
+
+@pytest.mark.skipif(not _raw_available(), reason="raw Home Credit files not present")
+def test_bureau_aggregation_on_real_rows():
+    """Regression (Phase 12): under pandas 2.3 the original merge of real bureau rows onto the
+    bureau_balance aggregate failed with 'Buffer dtype mismatch'."""
+    from src.data.load_data import read_table
+
+    bureau = read_table("bureau", nrows=3000)
+    bb = read_table("bureau_balance", nrows=300_000)
+    out = aggregate_bureau(bureau, bb)
+    assert out.index.is_unique and out["BUREAU_COUNT"].sum() == len(bureau)
+
+
+def test_joins_keep_compact_integer_ids():
+    """Joins compare keys as int64 but keep the original key type in the output."""
+    base = pd.DataFrame({"SK_ID_CURR": np.array([1, 2, 3], dtype="int32")})
+    agg = pd.DataFrame({"X_COUNT": [4.0]}, index=pd.Index(np.array([2], dtype="int32"),
+                                                          name="SK_ID_CURR"))
+    out = join_aggregate(base, agg, "HAS_X")
+    assert list(out["X_COUNT"]) == [0, 4, 0] and out["SK_ID_CURR"].dtype == np.int32
+    bureau = pd.DataFrame({
+        "SK_ID_CURR": np.array([1, 1], dtype="int32"),
+        "SK_ID_BUREAU": np.array([10, 11], dtype="int32"),
+        "CREDIT_ACTIVE": ["Active", "Closed"], "CREDIT_CURRENCY": ["currency 1"] * 2,
+        "DAYS_CREDIT": [-10, -20], "AMT_CREDIT_SUM": [1.0, 2.0],
+        "AMT_CREDIT_SUM_DEBT": [0.5, 0.0], "AMT_CREDIT_SUM_OVERDUE": [0.0, 0.0],
+        "AMT_CREDIT_MAX_OVERDUE": [0.0, 0.0], "CNT_CREDIT_PROLONG": [0, 0]})
+    bb = pd.DataFrame({"SK_ID_BUREAU": np.array([10, 10], dtype="int32"),
+                       "MONTHS_BALANCE": np.array([-1, -2], dtype="int8"),
+                       "STATUS": pd.Categorical(["1", "0"])})
+    assert aggregate_bureau(bureau, bb).loc[1, "BUREAU_BB_WORST_STATUS_12M"] == 1
+
+
 def test_join_aggregate_rejects_duplicate_keys():
     agg = pd.DataFrame({"X_COUNT": [1, 2]}, index=pd.Index([1, 1], name="SK_ID_CURR"))
     with pytest.raises(ValueError, match="duplicate"):

@@ -1,0 +1,29 @@
+area,check,recorded,reproduced,passed,note
+raw data,application_train.csv SHA-256 matches audit,52e96b895b11,52e96b895b11,True,
+raw data,application_test.csv SHA-256 matches audit,a36161331d83,a36161331d83,True,
+raw data,bureau.csv SHA-256 matches audit,9d799143423f,9d799143423f,True,
+raw data,bureau_balance.csv SHA-256 matches audit,33e09f06174c,33e09f06174c,True,
+raw data,previous_application.csv SHA-256 matches audit,5046cd657ee0,5046cd657ee0,True,
+raw data,POS_CASH_balance.csv SHA-256 matches audit,0e13bc573ffa,0e13bc573ffa,True,
+raw data,installments_payments.csv SHA-256 matches audit,428c2e2496e4,428c2e2496e4,True,
+raw data,credit_card_balance.csv SHA-256 matches audit,a9cdc48900d5,a9cdc48900d5,True,
+raw data,sample_submission.csv SHA-256 matches audit,95258f8383ad,95258f8383ad,True,
+raw data,HomeCredit_columns_description.csv SHA-256 matches audit,eef766539822,eef766539822,True,
+dataset,rebuilt modelling_train.parquet matches saved,saved,rebuilt,True,"307,511 rows x 157 columns: identical, including types"
+dataset,rebuilt portfolio_test.parquet matches saved,saved,rebuilt,True,"48,744 rows x 156 columns: identical, including types"
+dataset,rebuilt splits.parquet matches saved,saved,rebuilt,True,"307,511 rows x 2 columns: identical, including types"
+dataset,feature list identical,saved,rebuilt,True,
+model,deployed model file matches registry SHA-256,registered,on disk,True,
+model,test roc_auc of deployed model,0.787749745783597,0.787749745783597,True,tolerance 1e-12
+model,test pr_auc of deployed model,0.2901832788637242,0.2901832788637242,True,tolerance 1e-12
+model,test brier of deployed model,0.0655482653712022,0.06554826537120229,True,tolerance 1e-12
+model,test ece_quantile of deployed model,0.0022438433030252,0.002243843303025285,True,tolerance 1e-12
+retraining,same number of trees (early stopping),596,596,True,
+retraining,retrained test predictions equal deployed (max abs diff),0.0,0.0,True,tolerance 1e-9
+portfolio,expected difficulties (sum of PD),3659.341050897868,3659.341050897868,True,tolerance 1e-06
+portfolio,portfolio expected loss,800869217.3057877,800869217.3057877,True,tolerance 0.001
+simulation,Monte Carlo mean_loss,809144404.870365,809144404.870365,True,tolerance 0.001
+simulation,Monte Carlo var_99,2228590625.8972507,2228590625.8972507,True,tolerance 0.001
+simulation,Monte Carlo var_99.9,2895447245.4171033,2895447245.4171033,True,tolerance 0.001
+simulation,Monte Carlo es_99,2534392543.3515,2534392543.3515,True,tolerance 0.001
+audit,audit-log hash chain valid,True,True,True,
