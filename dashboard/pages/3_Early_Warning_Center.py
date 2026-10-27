@@ -8,14 +8,18 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import pandas as pd  # noqa: E402
 import plotly.express as px  # noqa: E402
 import streamlit as st  # noqa: E402
-from common import CFG, LEVEL_COLOURS, alerts, page_setup, table  # noqa: E402
+from common import CFG, LEVEL_COLOURS, alerts, model_and_meta, page_setup, table  # noqa: E402
+
+from src.risk.early_warning import resolve_levels  # noqa: E402
 
 page_setup("Early Warning Center")
 a = alerts()
 hist = alerts("alert_history.parquet")
 escalation = CFG["early_warning"]["flag_escalation"]
+lv_cut = resolve_levels(CFG["early_warning"]["levels"], model_and_meta()[1]["threshold"])
 st.caption("Alerts flag borrowers for REVIEW. They are not credit decisions. Levels come from "
-           "the deployed model's PD (yellow 10.5%, orange = operating threshold, red 40%); "
+           f"the deployed model's PD (yellow {lv_cut['yellow']:.1%}, orange "
+           f"{lv_cut['orange']:.1%} = operating threshold, red {lv_cut['red']:.0%}); "
            f"red flags are shown as context (escalation: {escalation}).")
 
 c = st.columns(4)

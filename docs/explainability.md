@@ -61,7 +61,12 @@ estimates up and F pushes them down, in line with the observed base rates (10.1%
   all five EXT_SOURCE features are in the top 11. This matches the Phase 3 univariate screening.
 - **Influence is spread out.** The top 10 features account for only 36% of total |SHAP|, so the
   model draws on many features, including history from four of the five side tables.
-- **SHAP and split-gain broadly agree.** Their rank correlation across all 155 features is 0.95.
+- **SHAP and split-gain broadly agree on which features matter, less on their order.** Their
+  Spearman rank correlation across all 155 features is 0.95. This figure is flattered by the 24
+  features the model never splits on: they are exactly zero in both measures, so they agree
+  trivially. Over the 131 used features it is 0.92; within the SHAP top 20 it is only 0.51.
+  (Recomputed in the Phase 12 audit; stable at 0.950–0.951 across bootstrap resamples of the
+  5,000-borrower SHAP sample.)
 - **Exception: `CODE_GENDER`** ranks 5th by SHAP but 45th by gain. It is used in few splits, but
   those splits shift many borrowers' scores. **This is a substantive finding for the fairness
   audit (Phase 10).** The model gives gender direct weight. Whether that is acceptable is a policy
@@ -131,8 +136,10 @@ Among the 270 borrowers with a counterfactual:
    reaches the threshold: the estimate is driven by locked factors such as external scores and
    credit history. This answers **RQ4**: constrained counterfactuals are feasible for about half
    of flagged borrowers, almost all of them close to the threshold.
-2. **The model's associations are not always intuitive.** For 12 of the 270 borrowers, the
-   smallest change was a *shorter* repayment period, which means larger instalments. The model
+2. **The model's associations are not always intuitive.** For 36 of the 270 borrowers (13%;
+   18 with the period change alone, 18 combined with a smaller loan), the smallest change was a
+   *shorter* repayment period, which means larger instalments. (An earlier version of this
+   document said 12; the audit recount from `counterfactual_evaluation_test.csv` gives 36.) The model
    associates shorter loans (lower `CREDIT_ANNUITY_RATIO`, 9th by SHAP) with lower risk. That is a
    learned association in this sample, possibly reflecting who is offered short loans, **not**
    evidence that higher instalments make a borrower safer. Counterfactuals expose such patterns;

@@ -8,7 +8,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import pandas as pd  # noqa: E402
 import plotly.express as px  # noqa: E402
 import streamlit as st  # noqa: E402
-from common import figure, page_setup, summary, table  # noqa: E402
+from common import figure, lever_text, page_setup, summary, table  # noqa: E402
 
 page_setup("Model Explainability")
 st.caption("SHAP values describe how the deployed model uses each feature (log-odds "
@@ -31,9 +31,18 @@ with left:
                      log_y=True)
     fig.update_layout(height=380)
     st.plotly_chart(fig, width="stretch")
-    st.caption(f"Spearman correlation of importances: {ph6['spearman_shap_vs_gain']:.2f}. "
-               "Exception: CODE_GENDER ranks 5th by SHAP but 45th by gain; it is examined "
-               "on the Monitoring & Fairness page.")
+    used = g[g["gain_share"] > 0]
+    rho_used = used["mean_abs_shap"].rank().corr(used["gain_share"].rank())
+    top20 = g.head(20)
+    rho_top = top20["mean_abs_shap"].rank().corr(top20["gain_share"].rank())
+    gender = g.set_index("feature").loc["CODE_GENDER"]
+    st.caption(f"Spearman correlation of importances: {ph6['spearman_shap_vs_gain']:.2f} over "
+               f"all {len(g)} features. {len(g) - len(used)} features are never used by the "
+               f"model (zero in both measures), which inflates this; over the {len(used)} used "
+               f"features it is {rho_used:.2f}, and within the SHAP top 20 only "
+               f"{rho_top:.2f}. Exception: CODE_GENDER ranks {gender['shap_rank']} by SHAP but "
+               f"{gender['gain_rank']} by gain; it is examined on the Monitoring & Fairness "
+               "page.")
 with right:
     st.subheader("Beeswarm (direction of effects)")
     path = figure("phase6_shap_beeswarm.png")
@@ -47,12 +56,19 @@ c[0].metric("Flagged test borrowers sampled", f"{cf['sample_size']:,}")
 c[1].metric("Counterfactual found", f"{cf['found_rate']:.0%}")
 c[2].metric("Median loan factor (found)", f"{cf['median_credit_factor_found']:.2f}")
 c[3].metric("Median period factor (found)", f"{cf['median_term_factor_found']:.3f}")
-st.dataframe(pd.DataFrame(cf["by_original_pd"]), hide_index=True, width="stretch")
-st.markdown(
-    "- Only the loan amount (down to 50%) and repayment period (x0.75-1.5) may change; "
-    "everything else is locked and checked.\n"
-    "- Above about 40% PD no allowed change reaches the threshold: risk is driven by locked "
-    "factors (external scores, credit history).\n"
-    "- Some solutions shorten the loan (larger instalments). That is a learned association, "
-    "not advice. Results are model-based hypotheticals, not offers or guarantees.\n"
-    "- Try it for any borrower on the **Borrower Analysis** page.")
+groups = pd.DataFrame(cf["by_original_pd"])
+st.dataframe(groups, hide_index=True, width="stretch")
+ev = table("counterfactual_evaluation_test.csv")
+found = ev[ev["status"] == "found"]
+shorter = int((found["term_factor"] < 1).sum())
+none_found = groups.loc[groups["found_rate"] == 0, "pd_group"].tolist()
+lines = [f"- {lever_text()}; everything else is locked and checked."]
+if none_found:
+    lines.append(f"- In the PD group(s) {', '.join(none_found)} no allowed change reaches the "
+                 "threshold: risk is driven by locked factors (external scores, credit "
+                 "history).")
+lines.append(f"- {shorter} of {len(found)} solutions shorten the repayment period (larger "
+             "instalments). That is a learned association, not advice. Results are "
+             "model-based hypotheticals, not offers or guarantees.")
+lines.append("- Try it for any borrower on the **Borrower Analysis** page.")
+st.markdown("\n".join(lines))

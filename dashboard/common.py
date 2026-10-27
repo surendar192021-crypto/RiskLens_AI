@@ -143,6 +143,14 @@ def counterfactual_bounds() -> dict[str, tuple]:
     return amount_bounds(train, tuple(CFG["counterfactuals"]["plausibility_quantiles"]))
 
 
+def lever_text() -> str:
+    """The allowed counterfactual changes, worded from config (never typed by hand)."""
+    cf = CFG["counterfactuals"]
+    c, t = cf["credit_factor"], cf["term_factor"]
+    return (f"Only the loan amount (down to {c['min']:.0%}) and repayment period "
+            f"(x{t['min']:g}-{t['max']:g}) may change")
+
+
 def figure(name: str) -> Path | None:
     path = FIGURES / name
     return path if path.exists() else None

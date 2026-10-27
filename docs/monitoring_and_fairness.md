@@ -49,7 +49,12 @@ P-values are not used to decide anything, because with this many rows even trivi
 Figure: `reports/figures/phase10_drift_top_features.png`.
 
 **Model scores:**
-- **PSI of the scores:** 0.0036 (stable). The control comparison gives 0.0003.
+- **PSI of the scores:** 0.0036 (stable). The control comparison gives 0.0003. Reference =
+  the deployed model's scores on the 184,505 training applicants; comparison = its scores on
+  the 48,744 portfolio applicants (10 decile bins of the reference). Training-set scores are
+  in-sample (train ROC-AUC 0.868 vs test 0.788), so the audit also used the held-out
+  validation split as reference: PSI 0.0040, the same conclusion. Train vs validation scores
+  give 0.0003, so in-sample fitting barely changes the score distribution.
 - **Mean PD:** 8.07% on training data vs 7.51% on the portfolio.
 - **Risk bands:** the portfolio has slightly fewer Moderate and High borrowers (1.1% and 0.09%,
   vs 1.6% and 0.25% in training).

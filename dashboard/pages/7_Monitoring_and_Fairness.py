@@ -8,7 +8,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import pandas as pd  # noqa: E402
 import plotly.express as px  # noqa: E402
 import streamlit as st  # noqa: E402
-from common import MODELS, page_setup, summary, table  # noqa: E402
+from common import CFG, MODELS, page_setup, summary, table  # noqa: E402
 
 from src.monitoring.audit_log import AuditLog  # noqa: E402
 from src.monitoring.model_registry import ModelRegistry  # noqa: E402
@@ -38,9 +38,11 @@ with tabs[0]:
     df = table("drift_features_portfolio.csv")
     top = df.head(15).iloc[::-1]
     fig = px.bar(top, x=["psi", "psi_control"], y="feature", orientation="h", barmode="group")
-    fig.add_vline(x=0.10, line_dash="dot")
-    fig.add_vline(x=0.25, line_dash="dot")
-    fig.update_layout(height=520, xaxis_title="PSI (dotted: 0.10 and 0.25 rule of thumb)",
+    cuts = CFG["monitoring"]["psi_thresholds"]
+    fig.add_vline(x=cuts["moderate"], line_dash="dot")
+    fig.add_vline(x=cuts["major"], line_dash="dot")
+    fig.update_layout(height=520, xaxis_title=f"PSI (dotted: {cuts['moderate']} and "
+                      f"{cuts['major']} rule of thumb, from config)",
                       yaxis_title=None, legend_title=None)
     st.plotly_chart(fig, width="stretch")
     st.dataframe(df[["feature", "type", "psi", "psi_control", "level", "ks_statistic",

@@ -20,26 +20,34 @@ model, current = model_and_meta()
 s, port = scored(), portfolio()
 threshold = float(current["threshold"])
 mc = CFG["monte_carlo"]
+# Defaults = the Phase 9 combined adverse scenario, read from config (not copied by hand).
+stress_cfg = CFG["stress_testing"]
+adverse = stress_cfg["scenarios"]["combined_adverse"]
 st.warning("Everything on this page is ASSUMPTION-BASED and HYPOTHETICAL: correlation and LGD "
            "are assumed, stress scenarios are feature perturbations (not calibrated to "
            "economic data), and results are not regulatory capital or forecasts of real losses.")
 
 with st.form("settings"):
     c = st.columns(4)
-    n_sims = c[0].number_input("Simulations", 500, 20000, int(mc["n_simulations"]), 500)
+    n_sims = c[0].number_input("Simulations", 500, 20000, int(stress_cfg["n_simulations"]), 500)
     seed = c[1].number_input("Random seed", 0, 10**6, int(mc["seed"]))
     rho_mode = c[2].selectbox("Correlation (rho)", ["fixed value", "Basel other-retail formula"])
     rho_val = c[3].slider("rho (if fixed)", 0.0, 0.5, float(mc["rho"]), 0.01)
     c = st.columns(3)
     lgd = c[0].slider("Baseline LGD", 0.0, 1.0, float(CFG["expected_loss"]["lgd"]), 0.05)
-    lgd_s = c[1].slider("Stressed LGD", 0.0, 1.0, 0.55, 0.05)
+    lgd_s = c[1].slider("Stressed LGD", 0.0, 1.0,
+                        float(adverse.get("lgd", CFG["expected_loss"]["lgd"])), 0.05)
     st.markdown("**Stress scenario** (changes borrower inputs, then rescoring by the model)")
     c = st.columns(5)
-    income_cut = c[0].slider("Income cut", 0.0, 0.6, 0.20, 0.05)
-    annuity_rise = c[1].slider("Annuity rise", 0.0, 0.6, 0.15, 0.05)
-    ext_cut = c[2].slider("External score cut", 0.0, 0.5, 0.10, 0.05)
-    job_share = c[3].slider("Job-loss share of employed", 0.0, 0.5, 0.10, 0.05)
-    job_income = c[4].slider("Income after job loss", 0.1, 1.0, 0.5, 0.1)
+    income_cut = c[0].slider("Income cut", 0.0, 0.6, float(adverse.get("income_cut", 0.0)), 0.05)
+    annuity_rise = c[1].slider("Annuity rise", 0.0, 0.6,
+                               float(adverse.get("annuity_rise", 0.0)), 0.05)
+    ext_cut = c[2].slider("External score cut", 0.0, 0.5,
+                          float(adverse.get("ext_source_cut", 0.0)), 0.05)
+    job_share = c[3].slider("Job-loss share of employed", 0.0, 0.5,
+                            float(adverse.get("job_loss_share", 0.0)), 0.05)
+    job_income = c[4].slider("Income after job loss", 0.1, 1.0,
+                             float(adverse.get("income_after_job_loss", 0.5)), 0.1)
     run = st.form_submit_button("Run simulation")
 
 rho = "basel_other_retail" if rho_mode.startswith("Basel") else rho_val

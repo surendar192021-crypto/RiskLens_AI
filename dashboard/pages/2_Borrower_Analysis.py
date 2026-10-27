@@ -14,6 +14,7 @@ from common import (  # noqa: E402
     DISCLAIMER,
     counterfactual_bounds,
     explainer,
+    lever_text,
     model_and_meta,
     money,
     page_setup,
@@ -52,10 +53,11 @@ srow = s[s["SK_ID_CURR"] == bid].iloc[0]
 result = explainer().explain_borrower(row)
 
 c = st.columns(4)
-c[0].metric("Predicted probability (PD)", f"{result['probability']:.1%}")
-c[1].metric("Calibrated probability", f"{result['probability']:.1%}",
-            help=f"Calibration method: {current['calibration_method']}. Phase 5 found no "
-                 "calibrator improved on the raw model, so both are the same.")
+c[0].metric("Raw model probability", f"{1 / (1 + np.exp(-result['raw_score'])):.1%}",
+            help="sigmoid(raw score) of the underlying LightGBM model, before any calibration.")
+c[1].metric("Deployed (calibrated) PD", f"{result['probability']:.1%}",
+            help=f"Calibration method: {current['calibration_method']}. With 'none' the two "
+                 "values are equal; Phase 5 found no calibrator improved on the raw model.")
 c[2].metric("Risk band (provisional)", str(srow["risk_band"]))
 c[3].metric("Alert level", str(srow["alert_level"]).upper())
 ew = CFG["early_warning"]
@@ -96,8 +98,8 @@ with st.expander("Borrower's main financial features"):
                  hide_index=True, width="stretch")
 
 st.subheader("Counterfactual: which loan terms would bring the estimate below the threshold?")
-st.caption("Only the loan amount (down to 50%) and repayment period (x0.75-1.5) may change; "
-           "everything else is locked. Each candidate is scored by the deployed model.")
+st.caption(f"{lever_text()}; everything else is locked. Each candidate is scored by the "
+           "deployed model.")
 if result["probability"] < threshold:
     st.info("This borrower is already below the review threshold.")
 elif st.button("Search for a counterfactual"):

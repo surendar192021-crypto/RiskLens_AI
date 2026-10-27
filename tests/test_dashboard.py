@@ -80,6 +80,24 @@ def test_simulation_page_runs_a_small_simulation():
     assert list(table.iloc[:, 0]) == ["Baseline", "Stressed"]
 
 
+def test_simulation_defaults_reproduce_phase9_combined_adverse():
+    """The page's default inputs come from config and give the Phase 9 stress results."""
+    at = AppTest.from_file(str(DASH / "pages" / "5_Simulation_and_Stress.py"),
+                           default_timeout=600)
+    at.run()
+    at.button[0].click()
+    at.run()
+    assert not at.exception, [e.value for e in at.exception]
+    stressed = at.dataframe[0].value.set_index("").loc["Stressed"]
+    summary = json.loads((project_path(CFG, "experiment_results")
+                          / "phase9_simulation_summary.json").read_text(encoding="utf-8"))
+    rec = next(r for r in summary["stress"] if r["scenario"] == "combined_adverse")
+    assert stressed["Mean PD"] == f"{rec['mean_pd']:.2%}"
+    assert stressed["Expected cases"] == f"{rec['expected_difficulties']:,.0f}"
+    assert stressed["Above threshold"] == f"{rec['above_threshold']:,}"
+    assert stressed["VaR 99.9%"] == f"{rec['var_99.9'] / 1e9:,.2f}B"
+
+
 def test_borrower_page_counterfactual_button():
     at = run_page("2_Borrower_Analysis.py")
     at.selectbox[0].set_value("Just above review threshold")

@@ -235,7 +235,9 @@ error is about 1e-14.
 **Drivers:**
 - **External scores dominate:** their mean has 8.9% of total |SHAP|.
 - **Influence is spread:** the top 10 features hold 36%.
-- **SHAP and split gain agree:** Spearman 0.95.
+- **SHAP and split gain broadly agree:** Spearman 0.95 over all 155 features, but this is
+  inflated by 24 unused features (zero in both). It is 0.92 over the 131 used features and
+  0.51 within the SHAP top 20.
 - **Exception:** `CODE_GENDER` ranks 5th by SHAP but 45th by gain.
 
 Plain-English explanations state that contributions are not causes.
@@ -246,7 +248,8 @@ Of 500 flagged test borrowers, a feasible loan-term change reaching the threshol
 **54%**:
 - **By original PD:** 87% for PD 16–25%, 21% for 25–40%, and 0% at or above 40%.
 - **Typical change:** a 5% smaller loan and a 12.5% longer period.
-- **A non-intuitive pattern:** some solutions shorten the loan, a learned association.
+- **A non-intuitive pattern:** 36 of the 270 solutions (13%) shorten the loan, a learned
+  association.
 
 ### RQ5: Temporal risk patterns
 
