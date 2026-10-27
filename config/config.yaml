@@ -105,6 +105,19 @@ early_warning:
     orange: "Manual review: check affordability and recent repayment history before deciding"
     red:    "Senior credit review: full manual assessment required; model output alone is not a decision"
 
+portfolio:
+  exposure_column: AMT_CREDIT       # EAD proxy: credit amount of the application (currency unstated)
+  segments: [NAME_CONTRACT_TYPE, NAME_INCOME_TYPE, NAME_EDUCATION_TYPE, NAME_HOUSING_TYPE,
+             REGION_RATING_CLIENT, AGE_BAND, ORGANIZATION_TYPE]
+  max_segment_levels: 12            # rarer levels are grouped into "Other"
+  age_bands: [18, 25, 35, 45, 55, 65, 120]
+
+expected_loss:
+  # ASSUMPTION, not observed: the dataset has no recovery data. 0.45 is the Basel II foundation-IRB
+  # supervisory LGD for senior unsecured claims, used here only as a reference point.
+  lgd: 0.45
+  lgd_sensitivity: [0.25, 0.45, 0.65, 0.85]
+
 risk_bands:
   # PROVISIONAL presentation bands, not validated banking standards.
   # Intervals are [lower, upper) except the last band, which includes 1.0.

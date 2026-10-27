@@ -16,7 +16,8 @@ guarantee future defaults.
 | 5. Calibration and final test evaluation | Done: `python -m scripts.calibrate_and_evaluate` → deployed model in `models/current_model.json` (test ROC-AUC 0.788, PR-AUC 0.290); [docs/calibration_and_evaluation.md](docs/calibration_and_evaluation.md) |
 | 6. SHAP and counterfactuals | Done: `python -m scripts.run_explainability`; [docs/explainability.md](docs/explainability.md) |
 | 7. Survival analysis and early warning | Done: `python -m scripts.run_survival` (previous loans; [docs/survival_analysis.md](docs/survival_analysis.md)), `python -m scripts.run_early_warning` (alerts; [docs/early_warning.md](docs/early_warning.md)) |
-| 8+ | Not started |
+| 8. Portfolio analytics and expected loss | Done: `python -m scripts.run_portfolio`; [docs/portfolio_risk.md](docs/portfolio_risk.md) (EL is assumption-based: LGD assumed) |
+| 9+ | Not started |
 
 ## Setup (Windows PowerShell)
 
