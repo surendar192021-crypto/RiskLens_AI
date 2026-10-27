@@ -19,7 +19,8 @@ guarantee future defaults.
 | 8. Portfolio analytics and expected loss | Done: `python -m scripts.run_portfolio`; [docs/portfolio_risk.md](docs/portfolio_risk.md) (EL is assumption-based: LGD assumed) |
 | 9. Monte Carlo, stress testing, migration | Done: `python -m scripts.run_simulation`, `python -m scripts.run_migration`; [docs/simulation_and_stress.md](docs/simulation_and_stress.md) (rho and LGD assumed) |
 | 10. Drift, fairness, registry, audit log | Done: `python -m scripts.run_monitoring`; [docs/monitoring_and_fairness.md](docs/monitoring_and_fairness.md) |
-| 11+ | Not started |
+| 11. Streamlit dashboard | Done: `streamlit run dashboard/app.py` (8 pages); [docs/dashboard.md](docs/dashboard.md) |
+| 12 | Not started |
 
 ## Setup (Windows PowerShell)
 
