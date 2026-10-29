@@ -55,9 +55,14 @@ selection on test data, which biases the final estimate. The difference is also 
 
 (`docs/model_training.md` §3)
 
-**Q8. Why isn't accuracy reported?**
-Predicting "no difficulty" for everyone scores 91.9%. We report ROC-AUC, PR-AUC, Brier score,
-log loss and ECE, plus precision, recall and F1 at a validation-chosen threshold.
+**Q8. What is each model's accuracy, and why isn't it used to choose the model?**
+Predicting "no difficulty" for everyone scores 91.93%. At the default 0.5 cut-off every
+unweighted model scores 91.9–92.0% on validation while catching only 0–4.5% of difficulty
+cases; the random forest flags nobody and still scores 91.93%. At each model's useful
+threshold, accuracy is 82–86% (LightGBM 86.0%, 42.9% of cases caught); on test LightGBM is
+86.1%. So we choose on PR-AUC and also report ROC-AUC, Brier score, log loss and ECE, plus
+precision, recall and F1 at a validation-chosen threshold. (`docs/model_training.md`,
+`python -m scripts.accuracy_report`)
 
 **Q9. Did calibration help?**
 No. Sigmoid and isotonic calibration did not beat the raw model on validation (Brier 0.06646

@@ -73,6 +73,7 @@ def threshold_metrics(y: Any, p: Any, threshold: float) -> dict[str, Any]:
     f1 = 2 * precision * recall / (precision + recall) if precision + recall else 0.0
     return {
         "threshold": float(threshold),
+        "accuracy": float((tp + tn) / len(y)),
         "precision": float(precision),
         "recall": float(recall),
         "f1": float(f1),

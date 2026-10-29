@@ -47,6 +47,7 @@ rules, then use Data → Download All. Unzip the CSVs into `data/raw/` and check
 | Modelling table and splits | `python -m scripts.build_dataset` | 1.5 min |
 | Train and compare 6 models | `python -m scripts.train_models` | 5.5 min |
 | Calibration, threshold, test evaluation | `python -m scripts.calibrate_and_evaluate` | 1 min |
+| Accuracy of all models (reference only) | `python -m scripts.accuracy_report` | 5 s |
 | SHAP and counterfactuals | `python -m scripts.run_explainability` | 2 min |
 | Early-warning alerts | `python -m scripts.run_early_warning` | 15 s |
 | Survival study (previous loans) | `python -m scripts.run_survival` | 21 min |

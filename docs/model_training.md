@@ -76,6 +76,37 @@ Figures: `reports/figures/phase4_roc_validation.png`, `phase4_pr_validation.png`
    the start, so early stopping fired at once. Weighted models now stop on validation ROC-AUC.
    All six experiments were re-run, and the unweighted results came out identical.
 
+### Accuracy, for reference only
+
+Accuracy is not used to choose a model, because the data is imbalanced: 8.07% of applicants
+have TARGET = 1, so predicting "no difficulty" for everyone is already **91.93%** accurate while
+catching nobody. The table below answers "what is each model's accuracy?" next to that
+baseline. It is computed from the saved validation predictions (46,127 applicants) by
+`python -m scripts.accuracy_report`, which writes `reports/tables/model_accuracy_validation.csv`.
+
+| Model | ROC-AUC | PR-AUC | Accuracy at 0.5 | Recall at 0.5 | Accuracy at own max-F1 threshold | Recall there |
+|---|---|---|---|---|---|---|
+| Baseline: predict no difficulty | — | — | 91.93% | 0% | 91.93% | 0% |
+| Logistic regression | 0.766 | 0.246 | 91.97% | 3.0% | 83.95% (t = 0.146) | 45.4% |
+| Logistic regression, weighted | 0.767 | 0.242 | 70.61% | 69.2% | 82.45% (t = 0.638) | 49.3% |
+| Random forest | 0.764 | 0.243 | 91.93% | 0.0% | 86.02% (t = 0.157) | 38.8% |
+| XGBoost | 0.783 | 0.268 | 91.98% | 4.4% | 86.37% (t = 0.166) | 42.6% |
+| **LightGBM (chosen)** | **0.784** | **0.268** | **92.00%** | **4.5%** | **86.03% (t = 0.162)** | **42.9%** |
+| LightGBM, weighted | 0.782 | 0.267 | 75.19% | 65.5% | 86.18% (t = 0.666) | 42.9% |
+
+How to read it:
+- **At the default 0.5 cut-off,** every unweighted model is within 0.1 points of the baseline,
+  and it catches 0–4.5% of the applicants who had difficulty. The random forest flags nobody
+  at all and still scores 91.93%. High accuracy here means almost nothing.
+- **At a useful threshold,** accuracy falls to 82–86% because the model now flags borrowers
+  for review, and some of them turn out fine. That is the intended trade: about 43% of
+  difficulty cases are caught.
+- **The weighted models** look worse at 0.5 only because their probabilities are inflated
+  (about 5×), so 0.5 means something different for them.
+- **On the test split** (`reports/tables/model_accuracy_test.csv`, from the saved confusion
+  counts, threshold chosen on validation): LightGBM 86.13%, XGBoost 86.55%, logistic
+  regression 84.34%, against a 91.93% baseline.
+
 ## 4. Champion and challenger
 
 - **Champion: LightGBM.** It has the highest validation PR-AUC under the configured rule.
@@ -83,6 +114,12 @@ Figures: `reports/figures/phase4_roc_validation.png`, `phase4_pr_validation.png`
   - it is equal on Brier score and log loss
   - it trains in 21 s against 119 s
   - SHAP supports it natively (Phase 6)
+- **Why not accuracy:** see the table above. Every model "wins" on accuracy at 0.5 by catching
+  almost no one; PR-AUC rewards the model that ranks the rare difficulty cases highest.
+- **Why not the random forest or logistic regression:** both rank borrowers worse (ROC-AUC
+  0.764 and 0.766 vs 0.784; PR-AUC 0.243 and 0.246 vs 0.268).
+- **Why not the weighted versions:** same ranking, but probabilities several times too high
+  (Brier 0.165–0.194 vs 0.067), which breaks expected loss and the risk bands.
 - **Challenger: XGBoost.** It is the best model from a different family and stays available for
   the final comparison.
 - **Baseline: logistic regression.** It is kept as the interpretable reference point.

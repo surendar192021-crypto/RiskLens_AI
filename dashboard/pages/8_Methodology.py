@@ -42,6 +42,27 @@ st.markdown(
     f"({current['threshold_policy']}, chosen on {current['threshold_chosen_on']}).")
 st.dataframe(fm[["model", "roc_auc", "roc_auc_ci_low", "roc_auc_ci_high", "pr_auc", "brier",
                  "ece_quantile"]], hide_index=True, width="stretch")
+with st.expander("Accuracy of all six models (reference only: why it is not used to choose)"):
+    acc = table("model_accuracy_validation.csv")
+    base = acc.loc[acc["model"].str.startswith("baseline"), "accuracy_at_0_5"].iloc[0]
+    st.markdown(
+        f"Only {1 - base:.2%} of applicants had payment difficulty, so predicting \"no "
+        f"difficulty\" for everyone is already **{base:.2%} accurate** while catching nobody. "
+        "At the default 0.5 cut-off the models barely beat that and catch almost no one; at "
+        "each model's own threshold, accuracy drops because borrowers are flagged for review, "
+        "and recall rises. LightGBM was chosen on PR-AUC, which rewards ranking the rare "
+        "difficulty cases highest.")
+    pct = ["accuracy_at_0_5", "recall_at_0_5", "accuracy_at_threshold", "recall_at_threshold"]
+    st.dataframe(acc[["model", "roc_auc", "pr_auc", *pct, "threshold_max_f1", "chosen"]],
+                 hide_index=True, width="stretch",
+                 column_config={c: st.column_config.NumberColumn(format="percent")
+                                for c in pct})
+    st.caption("Validation split, 46,127 applicants, from the saved Phase 4 predictions "
+               "(python -m scripts.accuracy_report). Thresholds were chosen on the same data, "
+               "so the threshold columns are slightly optimistic.")
+    st.dataframe(table("model_accuracy_test.csv"), hide_index=True, width="stretch")
+    st.caption("Final models on the test split, from their saved confusion counts; thresholds "
+               "chosen on validation.")
 st.dataframe(table("calibration_comparison_validation.csv")[
     ["method", "roc_auc", "pr_auc", "brier", "log_loss", "ece_quantile", "selected"]],
     hide_index=True)

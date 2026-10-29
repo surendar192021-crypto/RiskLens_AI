@@ -62,6 +62,20 @@ def test_threshold_metrics_confusion_matrix():
     m = threshold_metrics(y, p, 0.5)
     assert (m["tp"], m["fn"], m["fp"], m["tn"]) == (1, 1, 1, 2)
     assert m["precision"] == pytest.approx(0.5) and m["recall"] == pytest.approx(0.5)
+    assert m["accuracy"] == pytest.approx(3 / 5)  # (tp + tn) / n
+
+
+def test_accuracy_table_shows_why_accuracy_misleads():
+    from src.models.accuracy_report import BASELINE, accuracy_table
+    y = np.array([0] * 90 + [1] * 10)
+    rng = np.random.default_rng(0)
+    timid = np.where(y == 1, 0.4, 0.1) + rng.uniform(0, 0.05, 100)  # never reaches 0.5
+    t = accuracy_table(y, {"timid": timid}, champion="timid").set_index("model")
+    assert t.loc[BASELINE, "accuracy_at_0_5"] == pytest.approx(0.9)
+    # flags nobody at 0.5 -> exactly the baseline accuracy, zero recall, despite perfect ranking
+    assert t.loc["timid", "accuracy_at_0_5"] == pytest.approx(0.9)
+    assert t.loc["timid", "recall_at_0_5"] == 0.0 and t.loc["timid", "roc_auc"] == 1.0
+    assert t.loc["timid", "recall_at_threshold"] == 1.0 and bool(t.loc["timid", "chosen"])
 
 
 def test_evaluate_probabilities_keys_and_values():
